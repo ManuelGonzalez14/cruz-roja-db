@@ -78,16 +78,21 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
     const formData = new FormData(e.currentTarget);
     formData.append('activo', activo.toString());
     
-    const result = await actualizarVoluntario(voluntario.id, formData);
-    
-    if (result.success) {
-      toast.success('Voluntario actualizado exitosamente');
-      onClose();
-    } else {
-      toast.error(result.error || 'Ocurrió un error al guardar');
+    try {
+      const result = await actualizarVoluntario(voluntario.id, formData);
+      
+      if (result.success) {
+        toast.success('Voluntario actualizado exitosamente');
+        onClose();
+      } else {
+        toast.error(result.error || 'Ocurrió un error al guardar');
+      }
+    } catch (error: any) {
+      console.error("Error de red o servidor:", error);
+      toast.error('Error de conexión con el servidor. Por favor intenta de nuevo.');
+    } finally {
+      setIsSubmitting(false);
     }
-    
-    setIsSubmitting(false);
   };
 
   const handleDelete = async () => {
@@ -96,13 +101,19 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
     }
 
     setIsDeleting(true);
-    const result = await eliminarVoluntario(voluntario.id);
-    
-    if (result.success) {
-      toast.success('Voluntario eliminado');
-      onClose();
-    } else {
-      toast.error(result.error || 'Ocurrió un error al eliminar');
+    try {
+      const result = await eliminarVoluntario(voluntario.id);
+      
+      if (result.success) {
+        toast.success('Voluntario eliminado exitosamente');
+        onClose();
+      } else {
+        toast.error(result.error || 'Ocurrió un error al eliminar');
+      }
+    } catch (error: any) {
+      console.error("Error de red o servidor:", error);
+      toast.error('Error de conexión con el servidor. Por favor intenta de nuevo.');
+    } finally {
       setIsDeleting(false);
     }
   };

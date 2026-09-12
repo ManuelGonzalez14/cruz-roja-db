@@ -75,17 +75,21 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
     const formData = new FormData(e.currentTarget);
     
     // Llamada al Server Action
-    const result = await crearVoluntario(formData);
-    
-    if (result.success) {
-      toast.success('Voluntario registrado exitosamente');
-      onClose();
-      // Opcional: limpiar el formulario si no se desmonta
-    } else {
-      toast.error(result.error || 'Ocurrió un error al guardar');
+    try {
+      const result = await crearVoluntario(formData);
+      
+      if (result.success) {
+        toast.success('Voluntario añadido exitosamente');
+        onClose();
+      } else {
+        toast.error(result.error || 'Ocurrió un error al guardar');
+      }
+    } catch (error: any) {
+      console.error("Error de red o servidor:", error);
+      toast.error('Error de conexión con el servidor. Por favor intenta de nuevo.');
+    } finally {
+      setIsSubmitting(false);
     }
-    
-    setIsSubmitting(false);
   };
 
   return (
