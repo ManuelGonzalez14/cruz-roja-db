@@ -15,6 +15,7 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState<number | null>(null);
+  const [isCustomCurso, setIsCustomCurso] = useState(false);
 
   const cargarCursos = async () => {
     if (!voluntario) return;
@@ -108,7 +109,40 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                 <div className="input-group">
                   <label>Nombre del Curso *</label>
-                  <input type="text" name="nombre" required placeholder="Ej. Primeros Auxilios Básicos" className="search-input" style={{ backgroundColor: 'white' }} />
+                  <select 
+                    name={isCustomCurso ? "" : "nombre"} 
+                    className="search-input" 
+                    style={{ backgroundColor: 'white' }}
+                    required={!isCustomCurso}
+                    onChange={(e) => {
+                      if (e.target.value === 'Otro') {
+                        setIsCustomCurso(true);
+                      } else {
+                        setIsCustomCurso(false);
+                      }
+                    }}
+                  >
+                    <option value="">Seleccione un curso...</option>
+                    <option value="Primeros Auxilios Básicos (PAB)">Primeros Auxilios Básicos (PAB)</option>
+                    <option value="Técnico en Urgencias Médicas (TUM)">Técnico en Urgencias Médicas (TUM)</option>
+                    <option value="Asistente de Primeros Auxilios (APA)">Asistente de Primeros Auxilios (APA)</option>
+                    <option value="RCP y Uso de DEA">RCP y Uso de DEA</option>
+                    <option value="Apoyo Psicosocial (APS)">Apoyo Psicosocial (APS)</option>
+                    <option value="Manejo de Incidentes (SCI)">Manejo de Incidentes (SCI)</option>
+                    <option value="Conducción de Vehículos de Emergencia (COVE)">Conducción de Vehículos de Emergencia (COVE)</option>
+                    <option value="Otro">Otro (Especificar...)</option>
+                  </select>
+                  {isCustomCurso && (
+                    <input 
+                      type="text" 
+                      name="nombre" 
+                      required 
+                      placeholder="Escriba el nombre del curso..." 
+                      className="search-input" 
+                      style={{ backgroundColor: 'white', marginTop: '0.5rem' }} 
+                      autoFocus
+                    />
+                  )}
                 </div>
                 <div className="input-group">
                   <label>Institución *</label>
