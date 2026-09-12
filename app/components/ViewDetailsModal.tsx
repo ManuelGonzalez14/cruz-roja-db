@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { obtenerCursos } from '../acciones/voluntarios';
+import { obtenerCursos } from '../acciones/cursos';
 
 interface Props {
   voluntario: any;
@@ -21,7 +21,7 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
       document.body.style.overflow = 'hidden';
       if (voluntario?.id) {
         setIsLoadingCursos(true);
-        obtenerCursos(voluntario.id).then(result => {
+        obtenerCursos(voluntario.id).then((result: any) => {
           if (result.success && result.cursos) {
             setCursos(result.cursos);
           }
