@@ -88,20 +88,20 @@ export async function crearVoluntario(formData: FormData) {
     await prisma.voluntario.create({
       data: {
         nombre,
-        segundoNombre,
+        segundoNombre: segundoNombre || null,
         apellido,
-        segundoApellido,
+        segundoApellido: segundoApellido || null,
         cedula,
         numeroCarnet: numeroCarnet || null,
-        telefono,
-        especialidad,
-        tipoSangre,
-        alergias,
+        telefono: telefono || null,
+        especialidad: especialidad || null,
+        tipoSangre: tipoSangre || null,
+        alergias: alergias || null,
         fechaNacimiento: fechaNacimiento ? new Date(fechaNacimiento) : null,
-        direccion,
-        tallaUniforme,
-        contactoEmergNombre,
-        contactoEmergTelefono,
+        direccion: direccion || null,
+        tallaUniforme: tallaUniforme || null,
+        contactoEmergNombre: contactoEmergNombre || null,
+        contactoEmergTelefono: contactoEmergTelefono || null,
         fotoUrl
       }
     });
@@ -143,7 +143,8 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono, activo } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono } = validatedFields.data;
+    const activo = rawData.activo;
     const foto = formData.get('foto') as File | null;
 
     const existente = await prisma.voluntario.findUnique({ where: { id } });
@@ -202,20 +203,20 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
       where: { id },
       data: {
         nombre,
-        segundoNombre,
+        segundoNombre: segundoNombre || null,
         apellido,
-        segundoApellido,
+        segundoApellido: segundoApellido || null,
         cedula,
         numeroCarnet: numeroCarnet || null,
-        telefono,
-        especialidad,
-        tipoSangre,
-        alergias,
+        telefono: telefono || null,
+        especialidad: especialidad || null,
+        tipoSangre: tipoSangre || null,
+        alergias: alergias || null,
         fechaNacimiento: fechaNacimiento ? new Date(fechaNacimiento) : null,
-        direccion,
-        tallaUniforme,
-        contactoEmergNombre,
-        contactoEmergTelefono,
+        direccion: direccion || null,
+        tallaUniforme: tallaUniforme || null,
+        contactoEmergNombre: contactoEmergNombre || null,
+        contactoEmergTelefono: contactoEmergTelefono || null,
         fotoUrl,
         activo
       }

@@ -97,7 +97,9 @@ export async function eliminarCurso(cursoId: number) {
       const parts = curso.diplomaUrl.split('/voluntarios/');
       if (parts.length === 2) {
         const pathInBucket = parts[1]; // ej: 'diplomas/archivo.jpg'
-        await supabase.storage.from('voluntarios').remove([pathInBucket]);
+        if (pathInBucket) {
+          await supabase.storage.from('voluntarios').remove([pathInBucket]);
+        }
       }
     }
 
