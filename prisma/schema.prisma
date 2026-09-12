@@ -22,6 +22,18 @@ model Voluntario {
   activo      Boolean  @default(true)
   fotoUrl     String?
   creadoEn    DateTime @default(now())
+  cursos      Curso[]
+}
+
+model Curso {
+  id           Int        @id @default(autoincrement())
+  nombre       String
+  institucion  String     @default("Cruz Roja")
+  fecha        DateTime?
+  diplomaUrl   String?
+  voluntarioId Int
+  voluntario   Voluntario @relation(fields: [voluntarioId], references: [id], onDelete: Cascade)
+  creadoEn     DateTime   @default(now())
 }
 
 // Modelo para los administradores y usuarios del sistema
