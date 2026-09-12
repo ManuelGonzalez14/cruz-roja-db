@@ -116,8 +116,11 @@ export async function crearVoluntario(formData: FormData) {
   }
 }
 
-export async function actualizarVoluntario(id: number, formData: FormData) {
+export async function actualizarVoluntario(formData: FormData) {
   try {
+    const id = Number(formData.get('id'));
+    if (!id) return { success: false, error: 'ID inválido' };
+
     const rawData = {
       nombre: formData.get('nombre') as string,
       segundoNombre: (formData.get('segundoNombre') as string) || '',

@@ -74,6 +74,12 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
     
     const formData = new FormData(e.currentTarget);
     
+    // Evitar enviar un archivo de imagen vacío que causa error en el servidor
+    const foto = formData.get('foto');
+    if (foto instanceof File && foto.size === 0) {
+      formData.delete('foto');
+    }
+    
     // Llamada al Server Action
     try {
       const result = await crearVoluntario(formData);

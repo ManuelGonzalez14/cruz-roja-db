@@ -77,9 +77,16 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
     
     const formData = new FormData(e.currentTarget);
     formData.append('activo', activo.toString());
+    formData.append('id', voluntario.id.toString());
+    
+    // Evitar enviar un archivo de imagen vacío que causa error en el servidor
+    const foto = formData.get('foto');
+    if (foto instanceof File && foto.size === 0) {
+      formData.delete('foto');
+    }
     
     try {
-      const result = await actualizarVoluntario(voluntario.id, formData);
+      const result = await actualizarVoluntario(formData);
       
       if (result.success) {
         toast.success('Voluntario actualizado exitosamente');
