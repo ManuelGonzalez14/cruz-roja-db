@@ -179,7 +179,7 @@ body {
   color: white;
   border: none;
   padding: 0.85rem 1.75rem;
-  border-radius: 12px;
+  border-radius: 99px; /* Forma completamente redondeada */
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -198,7 +198,7 @@ body {
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
   padding: 0.85rem 1.75rem;
-  border-radius: 12px;
+  border-radius: 99px; /* Forma completamente redondeada */
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -216,7 +216,7 @@ body {
   color: var(--cruz-roja-red);
   border: none;
   padding: 0.85rem 1.75rem;
-  border-radius: 12px;
+  border-radius: 99px; /* Forma completamente redondeada */
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -338,7 +338,7 @@ body {
   color: white;
   border: none;
   padding: 1.1rem;
-  border-radius: 12px;
+  border-radius: 99px; /* Forma completamente redondeada */
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
@@ -500,7 +500,7 @@ body {
   width: 100%;
   padding: 0.85rem 1rem 0.85rem 2.5rem;
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 16px; /* Forma más redondeada y estética */
   font-size: 0.95rem;
   background-color: var(--bg-color-alt);
   color: var(--text-primary);
@@ -538,10 +538,11 @@ select.search-input:hover {
 }
 
 select.search-input option {
-  padding: 10px;
+  padding: 14px 16px; /* Más espacio interno para que no queden pegados al borde */
   background-color: #ffffff;
   color: #1f2937;
   font-size: 0.95rem;
+  border-bottom: 1px solid #f3f4f6; /* Línea divisoria suave */
 }
 
 
@@ -609,7 +610,7 @@ select.search-input option {
   color: var(--text-secondary);
   width: 32px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: 50%; /* Iconos completamente circulares */
   display: flex;
   justify-content: center;
   align-items: center;
