@@ -116,150 +116,161 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'var(--surface-color)', padding: '2.5rem',
-        borderRadius: '16px', width: '100%', maxWidth: '850px',
+        borderRadius: '16px', width: '100%', maxWidth: '1000px',
         border: '2px solid rgba(239, 68, 68, 0.3)',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
         maxHeight: '90vh', overflowY: 'auto'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
           <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Editar Voluntario</h2>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-tertiary)' }}>✕</button>
+          <button type="button" onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-tertiary)' }}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-            <div style={{ 
-              width: '100px', height: '100px', borderRadius: '50%', 
-              backgroundColor: 'var(--bg-color-alt)', border: '2px dashed var(--border-color)',
-              display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden',
-              cursor: 'pointer'
-            }} onClick={() => document.getElementById('fotoUploadEdit')?.click()}>
-              {previewUrl ? (
-                <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : (
-                <span style={{ fontSize: '2rem', color: 'var(--text-tertiary)' }}>📷</span>
-              )}
-            </div>
-            <label style={{ fontSize: '0.85rem', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600 }} htmlFor="fotoUploadEdit">
-              Cambiar Foto
-            </label>
-            <input type="file" id="fotoUploadEdit" name="foto" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-            <div className="input-group">
-              <label>Primer Nombre *</label>
-              <input type="text" name="nombre" defaultValue={voluntario.nombre} required placeholder="Juan" className="search-input" />
-            </div>
-            <div className="input-group">
-              <label>Segundo Nombre</label>
-              <input type="text" name="segundoNombre" defaultValue={voluntario.segundoNombre || ''} placeholder="Antonio" className="search-input" />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-            <div className="input-group">
-              <label>Primer Apellido *</label>
-              <input type="text" name="apellido" defaultValue={voluntario.apellido} required placeholder="Pérez" className="search-input" />
-            </div>
-            <div className="input-group">
-              <label>Segundo Apellido</label>
-              <input type="text" name="segundoApellido" defaultValue={voluntario.segundoApellido || ''} placeholder="García" className="search-input" />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-            <div className="input-group">
-              <label>Cédula *</label>
-              <input type="text" name="cedula" required defaultValue={voluntario.cedula} className="search-input" />
-            </div>
-            <div className="input-group">
-              <label>Fecha de Nacimiento</label>
-              <input type="date" name="fechaNacimiento" defaultValue={voluntario.fechaNacimiento ? new Date(voluntario.fechaNacimiento).toISOString().split('T')[0] : ''} className="search-input" />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-            <div className="input-group">
-              <label>Teléfono</label>
-              <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
-            </div>
-            <div className="input-group">
-              <label>Dirección</label>
-              <input type="text" name="direccion" defaultValue={voluntario.direccion || ''} placeholder="Las Tablas, Los Santos..." className="search-input" />
-            </div>
-          </div>
-
-          <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Contacto de Emergencia</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-              <div className="input-group">
-                <label>Nombre de Contacto</label>
-                <input type="text" name="contactoEmergNombre" defaultValue={voluntario.contactoEmergNombre || ''} placeholder="Familiar o Amigo" className="search-input" />
-              </div>
-              <div className="input-group">
-                <label>Teléfono de Emergencia</label>
-                <input type="tel" name="contactoEmergTelefono" defaultValue={voluntario.contactoEmergTelefono || ''} placeholder="6123-4567" className="search-input" />
-              </div>
-            </div>
-          </div>
-
-          <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
-            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Perfil Médico y Operativo</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem' }}>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-              <div className="input-group">
-                <label>Especialidad</label>
+            {/* COLUMNA IZQUIERDA: Info Personal y Emergencia */}
+            <div>
+              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>👤 Información Personal</h3>
+
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div className="input-group">
+                  <label>Primer Nombre *</label>
+                  <input type="text" name="nombre" defaultValue={voluntario.nombre} required placeholder="Juan" className="search-input" />
+                </div>
+                <div className="input-group">
+                  <label>Segundo Nombre</label>
+                  <input type="text" name="segundoNombre" defaultValue={voluntario.segundoNombre || ''} placeholder="Antonio" className="search-input" />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div className="input-group">
+                  <label>Primer Apellido *</label>
+                  <input type="text" name="apellido" defaultValue={voluntario.apellido} required placeholder="Pérez" className="search-input" />
+                </div>
+                <div className="input-group">
+                  <label>Segundo Apellido</label>
+                  <input type="text" name="segundoApellido" defaultValue={voluntario.segundoApellido || ''} placeholder="García" className="search-input" />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div className="input-group">
+                  <label>Cédula *</label>
+                  <input type="text" name="cedula" required defaultValue={voluntario.cedula} className="search-input" />
+                </div>
+                <div className="input-group">
+                  <label>Fecha de Nacimiento</label>
+                  <input type="date" name="fechaNacimiento" defaultValue={voluntario.fechaNacimiento ? new Date(voluntario.fechaNacimiento).toISOString().split('T')[0] : ''} className="search-input" />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div className="input-group">
+                  <label>Teléfono</label>
+                  <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
+                </div>
+                <div className="input-group">
+                  <label>Dirección</label>
+                  <input type="text" name="direccion" defaultValue={voluntario.direccion || ''} placeholder="Las Tablas, Los Santos..." className="search-input" />
+                </div>
+              </div>
+
+              <div style={{ marginTop: '2rem' }}>
+                <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>🆘 Contacto de Emergencia</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  <div className="input-group">
+                    <label>Nombre de Contacto</label>
+                    <input type="text" name="contactoEmergNombre" defaultValue={voluntario.contactoEmergNombre || ''} placeholder="Familiar o Amigo" className="search-input" />
+                  </div>
+                  <div className="input-group">
+                    <label>Teléfono de Emergencia</label>
+                    <input type="tel" name="contactoEmergTelefono" defaultValue={voluntario.contactoEmergTelefono || ''} placeholder="6123-4567" className="search-input" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* COLUMNA DERECHA: Foto, Perfil Médico y Estado */}
+            <div style={{ backgroundColor: 'var(--bg-color-alt)', padding: '1.5rem', borderRadius: '16px' }}>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem' }}>
+                <div style={{ 
+                  width: '120px', height: '120px', borderRadius: '50%', 
+                  backgroundColor: 'white', border: '2px dashed var(--border-color)',
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden',
+                  cursor: 'pointer'
+                }} onClick={() => document.getElementById('fotoUploadEdit')?.click()}>
+                  {previewUrl ? (
+                    <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <span style={{ fontSize: '2.5rem', color: 'var(--text-tertiary)' }}>📷</span>
+                  )}
+                </div>
+                <label style={{ fontSize: '0.85rem', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600 }} htmlFor="fotoUploadEdit">
+                  Cambiar Foto de Perfil
+                </label>
+                <input type="file" id="fotoUploadEdit" name="foto" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
+              </div>
+
+              <div className="input-group" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--surface-color)', borderRadius: '8px', border: '1px solid var(--border-color)', marginBottom: '2rem' }}>
+                <label style={{ marginBottom: 0, fontWeight: 600 }}>Estado del Voluntario</label>
+                <button 
+                  type="button"
+                  onClick={() => setActivo(!activo)}
+                  style={{
+                    padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold',
+                    backgroundColor: activo ? 'rgba(16, 185, 129, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                    color: activo ? '#059669' : '#4b5563',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {activo ? 'ACTIVO' : 'INACTIVO'}
+                </button>
+              </div>
+
+              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>⚕️ Perfil Médico y Operativo</h3>
+            
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                <div className="input-group">
+                  <label>Especialidad</label>
+                  <CustomSelect 
+                    name="especialidad" 
+                    options={opcionesEspecialidad} 
+                    placeholder="Seleccione especialidad..." 
+                    value={voluntario.especialidad || ""}
+                  />
+                </div>
+
+                <div className="input-group">
+                  <label>Tipo de Sangre</label>
+                  <CustomSelect 
+                    name="tipoSangre" 
+                    options={opcionesSangre} 
+                    placeholder="Desconocido" 
+                    value={voluntario.tipoSangre || ""}
+                  />
+                </div>
+              </div>
+
+              <div className="input-group" style={{ marginBottom: '1rem' }}>
+                <label>Talla de Uniforme</label>
                 <CustomSelect 
-                  name="especialidad" 
-                  options={opcionesEspecialidad} 
-                  placeholder="Seleccione especialidad..." 
-                  value={voluntario.especialidad || ""}
+                  name="tallaUniforme" 
+                  options={opcionesTalla} 
+                  placeholder="Seleccione talla..." 
+                  value={voluntario.tallaUniforme || ""}
                 />
               </div>
 
               <div className="input-group">
-                <label>Tipo de Sangre</label>
-                <CustomSelect 
-                  name="tipoSangre" 
-                  options={opcionesSangre} 
-                  placeholder="Desconocido" 
-                  value={voluntario.tipoSangre || ""}
-                />
+                <label>Alergias o Condiciones Médicas (Opcional)</label>
+                <input type="text" name="alergias" defaultValue={voluntario.alergias || ''} placeholder="Ej. Alérgico a la penicilina, asma..." className="search-input" />
               </div>
             </div>
-
-            <div className="input-group" style={{ marginBottom: '1rem' }}>
-              <label>Talla de Uniforme</label>
-              <CustomSelect 
-                name="tallaUniforme" 
-                options={opcionesTalla} 
-                placeholder="Seleccione talla..." 
-                value={voluntario.tallaUniforme || ""}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Alergias o Condiciones Médicas (Opcional)</label>
-              <input type="text" name="alergias" defaultValue={voluntario.alergias || ''} placeholder="Ej. Alérgico a la penicilina, asma..." className="search-input" />
-            </div>
-          </div>
-
-          <div className="input-group" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--bg-color-alt)', borderRadius: '8px' }}>
-            <label style={{ marginBottom: 0, fontWeight: 600 }}>Estado del Voluntario</label>
-            <button 
-              type="button"
-              onClick={() => setActivo(!activo)}
-              style={{
-                padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold',
-                backgroundColor: activo ? 'rgba(16, 185, 129, 0.15)' : 'rgba(107, 114, 128, 0.15)',
-                color: activo ? '#059669' : '#4b5563',
-                transition: 'all 0.2s'
-              }}
-            >
-              {activo ? 'ACTIVO ✅' : 'INACTIVO 💤'}
-            </button>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', paddingTop: '2rem', borderTop: '1px solid var(--border-color)' }}>
