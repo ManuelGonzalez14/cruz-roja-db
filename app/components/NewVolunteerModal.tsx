@@ -144,20 +144,25 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
                   <input type="text" name="cedula" required placeholder="8-123-4567" className="search-input" />
                 </div>
                 <div className="input-group">
-                  <label>Fecha de Nacimiento</label>
-                  <input type="date" name="fechaNacimiento" className="search-input" />
+                  <label>N° de Carnet (Opcional)</label>
+                  <input type="text" name="numeroCarnet" placeholder="Ej. 12345" className="search-input" />
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
                 <div className="input-group">
+                  <label>Fecha de Nacimiento</label>
+                  <input type="date" name="fechaNacimiento" className="search-input" />
+                </div>
+                <div className="input-group">
                   <label>Teléfono</label>
                   <input type="tel" name="telefono" placeholder="6123-4567" className="search-input" />
                 </div>
-                <div className="input-group">
-                  <label>Dirección</label>
-                  <input type="text" name="direccion" placeholder="Las Tablas, Los Santos..." className="search-input" />
-                </div>
+              </div>
+
+              <div className="input-group" style={{ marginBottom: '0.75rem' }}>
+                <label>Dirección</label>
+                <input type="text" name="direccion" placeholder="Las Tablas, Los Santos..." className="search-input" />
               </div>
 
               <div style={{ marginTop: '1rem' }}>

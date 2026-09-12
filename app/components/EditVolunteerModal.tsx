@@ -163,20 +163,25 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
                   <input type="text" name="cedula" required defaultValue={voluntario.cedula} className="search-input" />
                 </div>
                 <div className="input-group">
-                  <label>Fecha de Nacimiento</label>
-                  <input type="date" name="fechaNacimiento" defaultValue={voluntario.fechaNacimiento ? new Date(voluntario.fechaNacimiento).toISOString().split('T')[0] : ''} className="search-input" />
+                  <label>N° de Carnet (Opcional)</label>
+                  <input type="text" name="numeroCarnet" defaultValue={voluntario.numeroCarnet || ''} placeholder="Ej. 12345" className="search-input" />
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
                 <div className="input-group">
+                  <label>Fecha de Nacimiento</label>
+                  <input type="date" name="fechaNacimiento" defaultValue={voluntario.fechaNacimiento ? new Date(voluntario.fechaNacimiento).toISOString().split('T')[0] : ''} className="search-input" />
+                </div>
+                <div className="input-group">
                   <label>Teléfono</label>
                   <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
                 </div>
-                <div className="input-group">
-                  <label>Dirección</label>
-                  <input type="text" name="direccion" defaultValue={voluntario.direccion || ''} placeholder="Las Tablas, Los Santos..." className="search-input" />
-                </div>
+              </div>
+
+              <div className="input-group" style={{ marginBottom: '0.75rem' }}>
+                <label>Dirección</label>
+                <input type="text" name="direccion" defaultValue={voluntario.direccion || ''} placeholder="Las Tablas, Los Santos..." className="search-input" />
               </div>
 
               <div style={{ marginTop: '1rem' }}>

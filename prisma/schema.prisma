@@ -17,6 +17,7 @@ model Voluntario {
   apellido        String
   segundoApellido String?
   cedula          String   @unique
+  numeroCarnet    String?
   telefono    String?
   especialidad String?
   tipoSangre  String?

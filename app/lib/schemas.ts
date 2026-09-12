@@ -17,6 +17,7 @@ export const voluntarioSchema = z.object({
   cedula: z.string()
     .min(5, "La cédula es demasiado corta")
     .regex(cedulaRegex, "Formato de cédula inválido. Debe incluir guiones (ej. 8-123-4567)"),
+  numeroCarnet: z.string().optional().or(z.literal('')),
   telefono: z.string()
     .regex(telefonoRegex, "El teléfono debe tener entre 7 y 8 dígitos válidos")
     .optional()

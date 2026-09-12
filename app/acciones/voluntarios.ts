@@ -20,6 +20,7 @@ export async function crearVoluntario(formData: FormData) {
       apellido: formData.get('apellido') as string,
       segundoApellido: (formData.get('segundoApellido') as string) || '',
       cedula: formData.get('cedula') as string,
+      numeroCarnet: (formData.get('numeroCarnet') as string) || '',
       telefono: (formData.get('telefono') as string) || '',
       especialidad: (formData.get('especialidad') as string) || '',
       tipoSangre: (formData.get('tipoSangre') as string) || '',
@@ -37,7 +38,7 @@ export async function crearVoluntario(formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, segundoNombre, apellido, segundoApellido, cedula, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono } = validatedFields.data;
     const foto = formData.get('foto') as File | null;
 
     // Verificar si ya existe un voluntario con esa cédula
@@ -91,6 +92,7 @@ export async function crearVoluntario(formData: FormData) {
         apellido,
         segundoApellido,
         cedula,
+        numeroCarnet: numeroCarnet || null,
         telefono,
         especialidad,
         tipoSangre,
@@ -122,6 +124,7 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
       apellido: formData.get('apellido') as string,
       segundoApellido: (formData.get('segundoApellido') as string) || '',
       cedula: formData.get('cedula') as string,
+      numeroCarnet: (formData.get('numeroCarnet') as string) || '',
       telefono: (formData.get('telefono') as string) || '',
       especialidad: (formData.get('especialidad') as string) || '',
       tipoSangre: (formData.get('tipoSangre') as string) || '',
@@ -140,7 +143,7 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, segundoNombre, apellido, segundoApellido, cedula, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono, activo } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono, activo } = validatedFields.data;
     const foto = formData.get('foto') as File | null;
 
     const existente = await prisma.voluntario.findUnique({ where: { id } });
@@ -203,6 +206,7 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
         apellido,
         segundoApellido,
         cedula,
+        numeroCarnet: numeroCarnet || null,
         telefono,
         especialidad,
         tipoSangre,

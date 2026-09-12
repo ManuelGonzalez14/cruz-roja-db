@@ -135,6 +135,12 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
               </div>
               <p style={{ margin: '0 0 0.5rem 0', color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
                 Cédula: <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{voluntario.cedula}</span>
+                {voluntario.numeroCarnet && (
+                  <>
+                    <span style={{ margin: '0 0.75rem', color: 'var(--border-color)' }}>|</span>
+                    Carnet: <span style={{ color: 'var(--cruz-roja-red)', fontWeight: 'bold' }}>{voluntario.numeroCarnet}</span>
+                  </>
+                )}
               </p>
               <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
                 Miembro desde: {new Date(voluntario.creadoEn).toLocaleDateString('es-PA', { year: 'numeric', month: 'long', day: 'numeric' })}
