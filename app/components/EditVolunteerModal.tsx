@@ -96,7 +96,7 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
       }
     } catch (error: any) {
       console.error("Error de red o servidor:", error);
-      toast.error('Error de conexión con el servidor. Por favor intenta de nuevo.');
+      toast.error(`Error: ${error?.message || 'Error de conexión'}`);
     } finally {
       setIsSubmitting(false);
     }
