@@ -124,7 +124,7 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
             <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
           </div>
 
-          <div className="input-group" style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--bg-color-alt)', borderRadius: '8px' }}>
+          <div className="input-group" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--bg-color-alt)', borderRadius: '8px' }}>
             <label style={{ marginBottom: 0, fontWeight: 600 }}>Estado del Voluntario</label>
             <button 
               type="button"
