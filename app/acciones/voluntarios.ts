@@ -3,6 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
+import { voluntarioSchema } from '../lib/schemas';
 
 const prisma = new PrismaClient();
 
@@ -13,15 +14,21 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function crearVoluntario(formData: FormData) {
   try {
-    const nombre = formData.get('nombre') as string;
-    const apellido = formData.get('apellido') as string;
-    const cedula = formData.get('cedula') as string;
-    const telefono = formData.get('telefono') as string;
-    const foto = formData.get('foto') as File | null;
+    const rawData = {
+      nombre: formData.get('nombre') as string,
+      apellido: formData.get('apellido') as string,
+      cedula: formData.get('cedula') as string,
+      telefono: (formData.get('telefono') as string) || '',
+    };
 
-    if (!nombre || !apellido || !cedula) {
-      return { success: false, error: 'Nombre, apellido y cédula son requeridos' };
+    const validatedFields = voluntarioSchema.safeParse(rawData);
+
+    if (!validatedFields.success) {
+      return { success: false, error: validatedFields.error.errors[0].message };
     }
+
+    const { nombre, apellido, cedula, telefono } = validatedFields.data;
+    const foto = formData.get('foto') as File | null;
 
     // Verificar si ya existe un voluntario con esa cédula
     const existente = await prisma.voluntario.findUnique({
@@ -89,16 +96,22 @@ export async function crearVoluntario(formData: FormData) {
 
 export async function actualizarVoluntario(id: number, formData: FormData) {
   try {
-    const nombre = formData.get('nombre') as string;
-    const apellido = formData.get('apellido') as string;
-    const cedula = formData.get('cedula') as string;
-    const telefono = formData.get('telefono') as string;
-    const activo = formData.get('activo') === 'true';
-    const foto = formData.get('foto') as File | null;
+    const rawData = {
+      nombre: formData.get('nombre') as string,
+      apellido: formData.get('apellido') as string,
+      cedula: formData.get('cedula') as string,
+      telefono: (formData.get('telefono') as string) || '',
+      activo: formData.get('activo') === 'true'
+    };
 
-    if (!nombre || !apellido || !cedula) {
-      return { success: false, error: 'Nombre, apellido y cédula son requeridos' };
+    const validatedFields = voluntarioSchema.safeParse(rawData);
+
+    if (!validatedFields.success) {
+      return { success: false, error: validatedFields.error.errors[0].message };
     }
+
+    const { nombre, apellido, cedula, telefono, activo } = validatedFields.data;
+    const foto = formData.get('foto') as File | null;
 
     const existente = await prisma.voluntario.findUnique({ where: { id } });
     if (!existente) {
