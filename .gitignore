@@ -5,7 +5,8 @@ node_modules/
 .env
 .env*.local
 
-# Archivos de build de TypeScript
+# Archivos de build y temporales
+.next/
 dist/
 out/
 build/

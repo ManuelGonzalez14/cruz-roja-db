@@ -1,0 +1,116 @@
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+export default async function DashboardPage() {
+  const voluntarios = await prisma.voluntario.findMany({
+    orderBy: { creadoEn: 'desc' }
+  });
+
+  const totalVoluntarios = voluntarios.length;
+  const activos = voluntarios.filter(v => v.activo).length;
+  const inactivos = totalVoluntarios - activos;
+
+  return (
+    <main className="container">
+      <header className="header">
+        <div className="header-title" style={{ fontSize: '1.75rem' }}>
+          Panel de Voluntarios
+        </div>
+        <button className="primary-button">
+          + Nuevo Voluntario
+        </button>
+      </header>
+
+      {/* Estadísticas Rápidas */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">👥</div>
+          <div className="stat-info">
+            <h3>Total Voluntarios</h3>
+            <p>{totalVoluntarios}</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon" style={{ color: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)' }}>✅</div>
+          <div className="stat-info">
+            <h3>Activos</h3>
+            <p>{activos}</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon" style={{ color: '#6b7280', backgroundColor: 'rgba(107, 114, 128, 0.1)' }}>💤</div>
+          <div className="stat-info">
+            <h3>Inactivos</h3>
+            <p>{inactivos}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Barra de Herramientas */}
+      <div className="toolbar">
+        <div className="search-container">
+          <span className="search-icon">🔍</span>
+          <input type="text" className="search-input" placeholder="Buscar por nombre o cédula..." />
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button className="btn-icon" title="Filtrar">
+            <span style={{ fontSize: '1.2rem' }}>⚙️</span>
+          </button>
+          <button className="btn-icon" title="Exportar a Excel">
+            <span style={{ fontSize: '1.2rem' }}>📥</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Tabla de Voluntarios */}
+      <div className="table-container">
+        {voluntarios.length === 0 ? (
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            No hay voluntarios registrados aún.
+          </div>
+        ) : (
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Nombre Completo</th>
+                <th>Cédula</th>
+                <th>Teléfono</th>
+                <th>Estado</th>
+                <th>Fecha de Ingreso</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {voluntarios.map((voluntario) => (
+                <tr key={voluntario.id}>
+                  <td style={{ fontWeight: 600 }}>{voluntario.nombre} {voluntario.apellido}</td>
+                  <td>{voluntario.cedula}</td>
+                  <td>{voluntario.telefono || '-'}</td>
+                  <td>
+                    {voluntario.activo ? (
+                      <span style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+                        ACTIVO
+                      </span>
+                    ) : (
+                      <span style={{ backgroundColor: 'rgba(107, 114, 128, 0.15)', color: '#4b5563', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+                        INACTIVO
+                      </span>
+                    )}
+                  </td>
+                  <td>{new Date(voluntario.creadoEn).toLocaleDateString('es-PA')}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button className="btn-icon" title="Ver Detalles">👁️</button>
+                      <button className="btn-icon" title="Editar">✏️</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </main>
+  );
+}
