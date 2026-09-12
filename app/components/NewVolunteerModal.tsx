@@ -105,6 +105,46 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
             <input type="tel" name="telefono" placeholder="6123-4567" className="search-input" />
           </div>
 
+          <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Perfil Médico y Operativo</h3>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+              <div className="input-group">
+                <label>Especialidad</label>
+                <select name="especialidad" className="search-input" style={{ backgroundColor: 'white' }}>
+                  <option value="">Seleccione especialidad...</option>
+                  <option value="Aspirante">Aspirante</option>
+                  <option value="Voluntario Básico">Voluntario Básico</option>
+                  <option value="Paramédico">Paramédico</option>
+                  <option value="Rescatista">Rescatista</option>
+                  <option value="Chofer">Chofer</option>
+                  <option value="Apoyo Logístico">Apoyo Logístico</option>
+                  <option value="Administrativo">Administrativo</option>
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label>Tipo de Sangre</label>
+                <select name="tipoSangre" className="search-input" style={{ backgroundColor: 'white' }}>
+                  <option value="">Desconocido</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label>Alergias o Condiciones Médicas (Opcional)</label>
+              <input type="text" name="alergias" placeholder="Ej. Alérgico a la penicilina, asma..." className="search-input" />
+            </div>
+          </div>
+
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
             <button type="button" onClick={onClose} className="secondary-button">
               Cancelar

@@ -11,14 +11,17 @@ datasource db {
 // Aquí definiremos las tablas de la base de datos
 // Ejemplo: Tabla para registrar Voluntarios
 model Voluntario {
-  id        Int      @id @default(autoincrement())
-  nombre    String
-  apellido  String
-  cedula    String   @unique
-  telefono  String?
-  activo    Boolean  @default(true)
-  fotoUrl   String?
-  creadoEn  DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  apellido    String
+  cedula      String   @unique
+  telefono    String?
+  especialidad String?
+  tipoSangre  String?
+  alergias    String?
+  activo      Boolean  @default(true)
+  fotoUrl     String?
+  creadoEn    DateTime @default(now())
 }
 
 // Modelo para los administradores y usuarios del sistema

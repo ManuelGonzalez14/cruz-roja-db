@@ -19,5 +19,8 @@ export const voluntarioSchema = z.object({
     .regex(telefonoRegex, "El teléfono debe tener entre 7 y 8 dígitos válidos")
     .optional()
     .or(z.literal('')), // Permite que esté vacío
+  especialidad: z.string().optional().or(z.literal('')),
+  tipoSangre: z.string().optional().or(z.literal('')),
+  alergias: z.string().optional().or(z.literal('')),
   activo: z.boolean().optional(),
 });
