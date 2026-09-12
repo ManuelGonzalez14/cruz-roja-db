@@ -1,9 +1,14 @@
 "use server";
 
-import { prisma } from '../lib/prisma';
-import { supabase } from '../lib/supabase';
+import { PrismaClient } from '@prisma/client';
+import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+
+const prisma = new PrismaClient();
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const cursoSchema = z.object({
   nombre: z.string().min(2, "El nombre del curso es muy corto"),
