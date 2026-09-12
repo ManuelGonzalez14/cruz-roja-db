@@ -12,9 +12,11 @@ datasource db {
 // Ejemplo: Tabla para registrar Voluntarios
 model Voluntario {
   id          Int      @id @default(autoincrement())
-  nombre      String
-  apellido    String
-  cedula      String   @unique
+  nombre          String
+  segundoNombre   String?
+  apellido        String
+  segundoApellido String?
+  cedula          String   @unique
   telefono    String?
   especialidad String?
   tipoSangre  String?

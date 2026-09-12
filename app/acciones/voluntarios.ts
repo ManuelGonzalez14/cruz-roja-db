@@ -16,7 +16,9 @@ export async function crearVoluntario(formData: FormData) {
   try {
     const rawData = {
       nombre: formData.get('nombre') as string,
+      segundoNombre: (formData.get('segundoNombre') as string) || '',
       apellido: formData.get('apellido') as string,
+      segundoApellido: (formData.get('segundoApellido') as string) || '',
       cedula: formData.get('cedula') as string,
       telefono: (formData.get('telefono') as string) || '',
       especialidad: (formData.get('especialidad') as string) || '',
@@ -30,7 +32,7 @@ export async function crearVoluntario(formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, apellido, cedula, telefono, especialidad, tipoSangre, alergias } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, telefono, especialidad, tipoSangre, alergias } = validatedFields.data;
     const foto = formData.get('foto') as File | null;
 
     // Verificar si ya existe un voluntario con esa cédula
@@ -80,7 +82,9 @@ export async function crearVoluntario(formData: FormData) {
     await prisma.voluntario.create({
       data: {
         nombre,
+        segundoNombre,
         apellido,
+        segundoApellido,
         cedula,
         telefono,
         especialidad,
@@ -104,7 +108,9 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
   try {
     const rawData = {
       nombre: formData.get('nombre') as string,
+      segundoNombre: (formData.get('segundoNombre') as string) || '',
       apellido: formData.get('apellido') as string,
+      segundoApellido: (formData.get('segundoApellido') as string) || '',
       cedula: formData.get('cedula') as string,
       telefono: (formData.get('telefono') as string) || '',
       especialidad: (formData.get('especialidad') as string) || '',
@@ -119,7 +125,7 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, apellido, cedula, telefono, especialidad, tipoSangre, alergias, activo } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, telefono, especialidad, tipoSangre, alergias, activo } = validatedFields.data;
     const foto = formData.get('foto') as File | null;
 
     const existente = await prisma.voluntario.findUnique({ where: { id } });
@@ -178,7 +184,9 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
       where: { id },
       data: {
         nombre,
+        segundoNombre,
         apellido,
+        segundoApellido,
         cedula,
         telefono,
         especialidad,

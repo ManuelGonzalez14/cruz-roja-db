@@ -136,14 +136,25 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
             <input type="file" id="fotoUploadEdit" name="foto" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
             <div className="input-group">
-              <label>Nombre *</label>
-              <input type="text" name="nombre" required defaultValue={voluntario.nombre} className="search-input" />
+              <label>Primer Nombre *</label>
+              <input type="text" name="nombre" defaultValue={voluntario.nombre} required placeholder="Juan" className="search-input" />
             </div>
             <div className="input-group">
-              <label>Apellido *</label>
-              <input type="text" name="apellido" required defaultValue={voluntario.apellido} className="search-input" />
+              <label>Segundo Nombre</label>
+              <input type="text" name="segundoNombre" defaultValue={voluntario.segundoNombre || ''} placeholder="Antonio" className="search-input" />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="input-group">
+              <label>Primer Apellido *</label>
+              <input type="text" name="apellido" defaultValue={voluntario.apellido} required placeholder="Pérez" className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Segundo Apellido</label>
+              <input type="text" name="segundoApellido" defaultValue={voluntario.segundoApellido || ''} placeholder="García" className="search-input" />
             </div>
           </div>
 

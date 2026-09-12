@@ -111,7 +111,10 @@ export default async function DashboardPage(
                         ) : (
                           <div className="avatar">{iniciales}</div>
                         )}
-                        <span style={{ fontWeight: 600 }}>{voluntario.nombre} {voluntario.apellido}</span>
+                        <span style={{ fontWeight: 600 }}>
+                          {voluntario.nombre} {voluntario.segundoNombre ? voluntario.segundoNombre + ' ' : ''}
+                          {voluntario.apellido} {voluntario.segundoApellido ? voluntario.segundoApellido : ''}
+                        </span>
                       </div>
                     </td>
                   <td>{voluntario.cedula}</td>

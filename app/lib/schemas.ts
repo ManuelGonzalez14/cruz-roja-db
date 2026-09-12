@@ -11,7 +11,9 @@ const telefonoRegex = /^[0-9]{3,4}-?[0-9]{4}$/;
 
 export const voluntarioSchema = z.object({
   nombre: z.string().min(2, "El nombre debe tener al menos 2 letras").max(50, "El nombre es demasiado largo"),
+  segundoNombre: z.string().optional().or(z.literal('')),
   apellido: z.string().min(2, "El apellido debe tener al menos 2 letras").max(50, "El apellido es demasiado largo"),
+  segundoApellido: z.string().optional().or(z.literal('')),
   cedula: z.string()
     .min(5, "La cédula es demasiado corta")
     .regex(cedulaRegex, "Formato de cédula inválido. Debe incluir guiones (ej. 8-123-4567)"),

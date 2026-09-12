@@ -117,14 +117,25 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
             <input type="file" id="fotoUpload" name="foto" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
             <div className="input-group">
-              <label>Nombre *</label>
+              <label>Primer Nombre *</label>
               <input type="text" name="nombre" required placeholder="Juan" className="search-input" />
             </div>
             <div className="input-group">
-              <label>Apellido *</label>
+              <label>Segundo Nombre</label>
+              <input type="text" name="segundoNombre" placeholder="Antonio" className="search-input" />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="input-group">
+              <label>Primer Apellido *</label>
               <input type="text" name="apellido" required placeholder="Pérez" className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Segundo Apellido</label>
+              <input type="text" name="segundoApellido" placeholder="García" className="search-input" />
             </div>
           </div>
 
