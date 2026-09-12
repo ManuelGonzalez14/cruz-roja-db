@@ -97,7 +97,7 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'var(--surface-color)', padding: '2.5rem',
-        borderRadius: '16px', width: '100%', maxWidth: '1000px',
+        borderRadius: '16px', width: '100%', maxWidth: '1200px',
         border: '2px solid rgba(239, 68, 68, 0.3)',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
         maxHeight: '90vh', overflowY: 'auto'
@@ -115,24 +115,6 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
             <div>
               <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>👤 Información Personal</h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-            <div style={{ 
-              width: '100px', height: '100px', borderRadius: '50%', 
-              backgroundColor: 'var(--bg-color-alt)', border: '2px dashed var(--border-color)',
-              display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden',
-              cursor: 'pointer'
-            }} onClick={() => document.getElementById('fotoUpload')?.click()}>
-              {previewUrl ? (
-                <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : (
-                <span style={{ fontSize: '2rem', color: 'var(--text-tertiary)' }}>📷</span>
-              )}
-            </div>
-            <label style={{ fontSize: '0.85rem', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600 }} htmlFor="fotoUpload">
-              Subir Foto
-            </label>
-            <input type="file" id="fotoUpload" name="foto" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
-          </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                 <div className="input-group">

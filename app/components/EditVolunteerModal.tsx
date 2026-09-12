@@ -116,7 +116,7 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'var(--surface-color)', padding: '2.5rem',
-        borderRadius: '16px', width: '100%', maxWidth: '1000px',
+        borderRadius: '16px', width: '100%', maxWidth: '1200px',
         border: '2px solid rgba(239, 68, 68, 0.3)',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
         maxHeight: '90vh', overflowY: 'auto'
