@@ -106,10 +106,7 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
-            <button type="button" onClick={onClose} style={{
-              padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid var(--border-color)',
-              background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600
-            }}>
+            <button type="button" onClick={onClose} className="secondary-button">
               Cancelar
             </button>
             <button type="submit" className="primary-button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>

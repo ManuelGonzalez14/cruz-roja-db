@@ -193,6 +193,40 @@ body {
   background: linear-gradient(135deg, var(--cruz-roja-light-red) 0%, var(--cruz-roja-red) 100%);
 }
 
+.secondary-button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--text-primary);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.danger-button {
+  background: rgba(230, 0, 0, 0.08);
+  color: var(--cruz-roja-red);
+  border: none;
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.danger-button:hover {
+  background: rgba(230, 0, 0, 0.15);
+}
+
 .empty-state {
   text-align: center;
   padding: 5rem 2rem;

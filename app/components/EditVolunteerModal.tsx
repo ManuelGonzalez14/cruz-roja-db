@@ -141,23 +141,17 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', paddingTop: '2rem', borderTop: '1px solid var(--border-color)' }}>
-            <button type="button" onClick={handleDelete} disabled={isDeleting} style={{
-              padding: '0.75rem 1.25rem', borderRadius: '8px', border: 'none',
-              background: 'rgba(239, 68, 68, 0.1)', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600,
-              opacity: isDeleting ? 0.7 : 1, whiteSpace: 'nowrap'
+            <button type="button" onClick={handleDelete} disabled={isDeleting} className="danger-button" style={{
+              opacity: isDeleting ? 0.7 : 1, display: 'flex', alignItems: 'center', gap: '0.5rem'
             }}>
-              {isDeleting ? 'Borrando...' : '🗑️ Eliminar'}
+              {isDeleting ? 'Borrando...' : <><span>🗑️</span> Eliminar</>}
             </button>
 
             <div style={{ display: 'flex', gap: '1rem' }}>
-              <button type="button" onClick={onClose} style={{
-                padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid var(--border-color)',
-                background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600,
-                whiteSpace: 'nowrap'
-              }}>
+              <button type="button" onClick={onClose} className="secondary-button">
                 Cancelar
               </button>
-              <button type="submit" className="primary-button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1, whiteSpace: 'nowrap' }}>
+              <button type="submit" className="primary-button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
                 {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
               </button>
             </div>
