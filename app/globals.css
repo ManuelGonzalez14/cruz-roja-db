@@ -513,6 +513,38 @@ body {
   box-shadow: 0 0 0 3px var(--red-glow);
 }
 
+/* --- Mejoras de Formularios y Selectores (Modern UI) --- */
+.input-group .search-input {
+  padding-left: 1rem; /* Elimina el espacio reservado para la lupa en formularios */
+}
+
+select.search-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Ícono Chevron Rojo personalizado para el menú desplegable */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2em;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+select.search-input:hover {
+  border-color: var(--cruz-roja-red);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.05);
+}
+
+select.search-input option {
+  padding: 10px;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+
 .search-icon {
   position: absolute;
   left: 1rem;
