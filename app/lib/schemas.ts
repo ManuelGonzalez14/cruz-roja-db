@@ -24,5 +24,10 @@ export const voluntarioSchema = z.object({
   especialidad: z.string().optional().or(z.literal('')),
   tipoSangre: z.string().optional().or(z.literal('')),
   alergias: z.string().optional().or(z.literal('')),
+  fechaNacimiento: z.string().optional().or(z.literal('')),
+  direccion: z.string().optional().or(z.literal('')),
+  tallaUniforme: z.string().optional().or(z.literal('')),
+  contactoEmergNombre: z.string().optional().or(z.literal('')),
+  contactoEmergTelefono: z.string().optional().or(z.literal('')),
   activo: z.boolean().optional(),
 });

@@ -91,10 +91,7 @@ export default async function DashboardPage(
               <tr>
                 <th>Nombre Completo</th>
                 <th>Cédula</th>
-                <th>Teléfono</th>
-                <th>Rol / Sangre</th>
                 <th>Estado</th>
-                <th>Fecha de Ingreso</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -118,15 +115,6 @@ export default async function DashboardPage(
                       </div>
                     </td>
                   <td>{voluntario.cedula}</td>
-                  <td>{voluntario.telefono || '-'}</td>
-                  <td>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                      <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{(voluntario as any).especialidad || 'Sin especialidad'}</span>
-                      {(voluntario as any).tipoSangre && (
-                        <span style={{ fontSize: '0.75rem', color: 'var(--cruz-roja-red)' }}>Sangre: {(voluntario as any).tipoSangre}</span>
-                      )}
-                    </div>
-                  </td>
                   <td>
                     {voluntario.activo ? (
                       <span style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
@@ -138,7 +126,6 @@ export default async function DashboardPage(
                       </span>
                     )}
                   </td>
-                  <td>{new Date(voluntario.creadoEn).toLocaleDateString('es-PA')}</td>
                   <td>
                     <VolunteerActions voluntario={voluntario} />
                   </td>

@@ -26,6 +26,15 @@ const opcionesSangre = [
   { value: "O-", label: "O-" }
 ];
 
+const opcionesTalla = [
+  { value: "XS", label: "XS" },
+  { value: "S", label: "S" },
+  { value: "M", label: "M" },
+  { value: "L", label: "L" },
+  { value: "XL", label: "XL" },
+  { value: "XXL", label: "XXL" }
+];
+
 interface Props {
   voluntario: any;
   isOpen: boolean;
@@ -158,14 +167,40 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
             </div>
           </div>
 
-          <div className="input-group">
-            <label>Cédula *</label>
-            <input type="text" name="cedula" required defaultValue={voluntario.cedula} className="search-input" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="input-group">
+              <label>Cédula *</label>
+              <input type="text" name="cedula" required defaultValue={voluntario.cedula} className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Fecha de Nacimiento</label>
+              <input type="date" name="fechaNacimiento" defaultValue={voluntario.fechaNacimiento ? new Date(voluntario.fechaNacimiento).toISOString().split('T')[0] : ''} className="search-input" />
+            </div>
           </div>
 
-          <div className="input-group">
-            <label>Teléfono</label>
-            <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="input-group">
+              <label>Teléfono</label>
+              <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Dirección</label>
+              <input type="text" name="direccion" defaultValue={voluntario.direccion || ''} placeholder="Las Tablas, Los Santos..." className="search-input" />
+            </div>
+          </div>
+
+          <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Contacto de Emergencia</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+              <div className="input-group">
+                <label>Nombre de Contacto</label>
+                <input type="text" name="contactoEmergNombre" defaultValue={voluntario.contactoEmergNombre || ''} placeholder="Familiar o Amigo" className="search-input" />
+              </div>
+              <div className="input-group">
+                <label>Teléfono de Emergencia</label>
+                <input type="tel" name="contactoEmergTelefono" defaultValue={voluntario.contactoEmergTelefono || ''} placeholder="6123-4567" className="search-input" />
+              </div>
+            </div>
           </div>
 
           <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
@@ -191,6 +226,16 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
                   value={voluntario.tipoSangre || ""}
                 />
               </div>
+            </div>
+
+            <div className="input-group" style={{ marginBottom: '1rem' }}>
+              <label>Talla de Uniforme</label>
+              <CustomSelect 
+                name="tallaUniforme" 
+                options={opcionesTalla} 
+                placeholder="Seleccione talla..." 
+                value={voluntario.tallaUniforme || ""}
+              />
             </div>
 
             <div className="input-group">

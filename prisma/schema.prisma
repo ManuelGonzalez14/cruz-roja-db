@@ -20,9 +20,14 @@ model Voluntario {
   telefono    String?
   especialidad String?
   tipoSangre  String?
-  alergias    String?
-  activo      Boolean  @default(true)
-  fotoUrl     String?
+  alergias        String?
+  fechaNacimiento DateTime?
+  direccion       String?
+  tallaUniforme   String?
+  contactoEmergNombre    String?
+  contactoEmergTelefono  String?
+  activo          Boolean  @default(true)
+  fotoUrl         String?
   creadoEn    DateTime @default(now())
   cursos      Curso[]
 }

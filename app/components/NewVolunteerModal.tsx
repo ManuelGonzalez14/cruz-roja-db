@@ -23,7 +23,16 @@ const opcionesSangre = [
   { value: "AB+", label: "AB+" },
   { value: "AB-", label: "AB-" },
   { value: "O+", label: "O+" },
-  { value: "O-", label: "O-" }
+  { value: "O-", label: "O-" },
+];
+
+const opcionesTalla = [
+  { value: "XS", label: "XS" },
+  { value: "S", label: "S" },
+  { value: "M", label: "M" },
+  { value: "L", label: "L" },
+  { value: "XL", label: "XL" },
+  { value: "XXL", label: "XXL" },
 ];
 
 interface Props {
@@ -139,14 +148,40 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
             </div>
           </div>
 
-          <div className="input-group">
-            <label>Cédula *</label>
-            <input type="text" name="cedula" required placeholder="8-123-4567" className="search-input" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="input-group">
+              <label>Cédula *</label>
+              <input type="text" name="cedula" required placeholder="8-123-4567" className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Fecha de Nacimiento</label>
+              <input type="date" name="fechaNacimiento" className="search-input" />
+            </div>
           </div>
 
-          <div className="input-group">
-            <label>Teléfono</label>
-            <input type="tel" name="telefono" placeholder="6123-4567" className="search-input" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="input-group">
+              <label>Teléfono</label>
+              <input type="tel" name="telefono" placeholder="6123-4567" className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Dirección</label>
+              <input type="text" name="direccion" placeholder="Las Tablas, Los Santos..." className="search-input" />
+            </div>
+          </div>
+
+          <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
+            <h3 style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Contacto de Emergencia</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+              <div className="input-group">
+                <label>Nombre de Contacto</label>
+                <input type="text" name="contactoEmergNombre" placeholder="Familiar o Amigo" className="search-input" />
+              </div>
+              <div className="input-group">
+                <label>Teléfono de Emergencia</label>
+                <input type="tel" name="contactoEmergTelefono" placeholder="6123-4567" className="search-input" />
+              </div>
+            </div>
           </div>
 
           <div style={{ margin: '1rem 0', borderTop: '1px dashed var(--border-color)', paddingTop: '1.5rem' }}>
@@ -170,6 +205,15 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
                   placeholder="Desconocido" 
                 />
               </div>
+            </div>
+
+            <div className="input-group" style={{ marginBottom: '1rem' }}>
+              <label>Talla de Uniforme</label>
+              <CustomSelect 
+                name="tallaUniforme" 
+                options={opcionesTalla} 
+                placeholder="Seleccione talla..." 
+              />
             </div>
 
             <div className="input-group">
