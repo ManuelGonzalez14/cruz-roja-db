@@ -14,16 +14,21 @@ export default async function DashboardPage(
   const searchParams = await props.searchParams;
   const query = searchParams?.q || '';
 
-  const voluntarios = await prisma.voluntario.findMany({
-    where: query ? {
-      OR: [
-        { nombre: { contains: query, mode: 'insensitive' as const } },
-        { apellido: { contains: query, mode: 'insensitive' as const } },
-        { cedula: { contains: query, mode: 'insensitive' as const } }
-      ]
-    } : undefined,
+  const findArgs: any = {
     orderBy: { creadoEn: 'desc' }
-  });
+  };
+
+  if (query) {
+    findArgs.where = {
+      OR: [
+        { nombre: { contains: query, mode: 'insensitive' } },
+        { apellido: { contains: query, mode: 'insensitive' } },
+        { cedula: { contains: query, mode: 'insensitive' } }
+      ]
+    };
+  }
+
+  const voluntarios = await prisma.voluntario.findMany(findArgs);
 
   const totalVoluntarios = voluntarios.length;
   const activos = voluntarios.filter(v => v.activo).length;

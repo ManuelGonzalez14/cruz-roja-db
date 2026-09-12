@@ -9,7 +9,7 @@ export default function SearchBar() {
   const { replace } = useRouter();
   
   // Referencia para el timer del debounce
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleSearch = useCallback((term: string) => {
     // Limpiar el timer anterior si el usuario sigue escribiendo
