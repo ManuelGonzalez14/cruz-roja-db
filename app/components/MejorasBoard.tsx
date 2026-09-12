@@ -161,7 +161,7 @@ export default function MejorasBoard({ initialMejoras }: { initialMejoras: Mejor
                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
                       {columna !== 'Pendiente' && (
                         <button 
-                          onClick={() => handleMoverMejora(mejora.id, columnas[columnas.indexOf(columna) - 1])}
+                          onClick={() => handleMoverMejora(mejora.id, columnas[columnas.indexOf(columna) - 1] as string)}
                           style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', cursor: 'pointer', fontSize: '0.85rem' }}
                         >
                           ⬅️
@@ -169,7 +169,7 @@ export default function MejorasBoard({ initialMejoras }: { initialMejoras: Mejor
                       )}
                       {columna !== 'Completado' && (
                         <button 
-                          onClick={() => handleMoverMejora(mejora.id, columnas[columnas.indexOf(columna) + 1])}
+                          onClick={() => handleMoverMejora(mejora.id, columnas[columnas.indexOf(columna) + 1] as string)}
                           style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--bg-color)', cursor: 'pointer', fontSize: '0.85rem' }}
                         >
                           ➡️
