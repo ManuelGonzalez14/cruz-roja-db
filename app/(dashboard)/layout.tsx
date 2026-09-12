@@ -31,6 +31,14 @@ export default function DashboardLayout({
             <span className="nav-icon">🚨</span>
             Incidentes
           </a>
+
+          <div style={{ margin: '2rem 0 0.5rem 1rem', fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 'bold' }}>
+            👨‍💻 Desarrollador
+          </div>
+          <a href="/mejoras" className="nav-item">
+            <span className="nav-icon">💡</span>
+            Mejoras e Ideas
+          </a>
         </nav>
 
         <div className="sidebar-footer">

@@ -52,3 +52,12 @@ model Usuario {
   rol       String   @default("ADMIN") // Ejemplo: ADMIN, DESARROLLADOR
   creadoEn  DateTime @default(now())
 }
+
+// Modelo para registrar las mejoras e ideas del desarrollador
+model Mejora {
+  id          Int      @id @default(autoincrement())
+  titulo      String
+  descripcion String?
+  estado      String   @default("Pendiente") // Pendiente, En Progreso, Completado
+  creadoEn    DateTime @default(now())
+}
