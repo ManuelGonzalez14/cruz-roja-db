@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import DashboardHeader from '../components/DashboardHeader';
 
 const prisma = new PrismaClient();
 
@@ -13,14 +14,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="container">
-      <header className="header">
-        <div className="header-title" style={{ fontSize: '1.75rem' }}>
-          Panel de Voluntarios
-        </div>
-        <button className="primary-button">
-          + Nuevo Voluntario
-        </button>
-      </header>
+      <DashboardHeader />
 
       {/* Estadísticas Rápidas */}
       <div className="stats-grid">
@@ -82,9 +76,21 @@ export default async function DashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {voluntarios.map((voluntario) => (
-                <tr key={voluntario.id}>
-                  <td style={{ fontWeight: 600 }}>{voluntario.nombre} {voluntario.apellido}</td>
+              {voluntarios.map((voluntario) => {
+                const iniciales = `${voluntario.nombre.charAt(0)}${voluntario.apellido.charAt(0)}`.toUpperCase();
+                
+                return (
+                  <tr key={voluntario.id}>
+                    <td>
+                      <div className="volunteer-profile">
+                        {voluntario.fotoUrl ? (
+                          <img src={voluntario.fotoUrl} alt={voluntario.nombre} className="avatar" />
+                        ) : (
+                          <div className="avatar">{iniciales}</div>
+                        )}
+                        <span style={{ fontWeight: 600 }}>{voluntario.nombre} {voluntario.apellido}</span>
+                      </div>
+                    </td>
                   <td>{voluntario.cedula}</td>
                   <td>{voluntario.telefono || '-'}</td>
                   <td>
@@ -106,7 +112,8 @@ export default async function DashboardPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              );
+            })}
             </tbody>
           </table>
         )}

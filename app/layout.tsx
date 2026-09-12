@@ -1,5 +1,6 @@
 // @ts-ignore
 import './globals.css';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
   title: 'Cruz Roja Panameña - Las Tablas',
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
+        <Toaster position="top-right" />
         {children}
       </body>
     </html>

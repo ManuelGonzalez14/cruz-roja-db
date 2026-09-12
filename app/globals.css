@@ -556,3 +556,25 @@ body {
   color: white;
   border-color: var(--cruz-roja-red);
 }
+
+/* Avatar de Voluntario */
+.volunteer-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: rgba(230, 0, 0, 0.1);
+  color: var(--cruz-roja-red);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1rem;
+  border: 1px solid rgba(230, 0, 0, 0.2);
+}

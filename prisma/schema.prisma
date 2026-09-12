@@ -17,6 +17,7 @@ model Voluntario {
   cedula    String   @unique
   telefono  String?
   activo    Boolean  @default(true)
+  fotoUrl   String?
   creadoEn  DateTime @default(now())
 }
 
