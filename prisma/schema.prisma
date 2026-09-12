@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Aquí definiremos las tablas de la base de datos
+// Ejemplo: Tabla para registrar Voluntarios
+model Voluntario {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  apellido  String
+  cedula    String   @unique
+  telefono  String?
+  activo    Boolean  @default(true)
+  creadoEn  DateTime @default(now())
+}
