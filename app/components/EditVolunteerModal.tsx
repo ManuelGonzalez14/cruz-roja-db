@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { actualizarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
 
@@ -15,6 +15,17 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
   const [isDeleting, setIsDeleting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(voluntario?.fotoUrl || null);
   const [activo, setActivo] = useState<boolean>(voluntario?.activo ?? true);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen || !voluntario) return null;
 
@@ -133,7 +144,7 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
                 <select name="especialidad" defaultValue={voluntario.especialidad || ''} className="search-input" style={{ backgroundColor: 'white' }}>
                   <option value="">Seleccione especialidad...</option>
                   <option value="Aspirante">Aspirante</option>
-                  <option value="Voluntario Básico">Voluntario Básico</option>
+                  <option value="Voluntario">Voluntario</option>
                   <option value="Paramédico">Paramédico</option>
                   <option value="Rescatista">Rescatista</option>
                   <option value="Chofer">Chofer</option>

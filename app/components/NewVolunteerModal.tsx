@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { crearVoluntario } from '../acciones/voluntarios';
 
@@ -12,6 +12,17 @@ interface Props {
 export default function NewVolunteerModal({ isOpen, onClose }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -114,7 +125,7 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
                 <select name="especialidad" className="search-input" style={{ backgroundColor: 'white' }}>
                   <option value="">Seleccione especialidad...</option>
                   <option value="Aspirante">Aspirante</option>
-                  <option value="Voluntario Básico">Voluntario Básico</option>
+                  <option value="Voluntario">Voluntario</option>
                   <option value="Paramédico">Paramédico</option>
                   <option value="Rescatista">Rescatista</option>
                   <option value="Chofer">Chofer</option>
