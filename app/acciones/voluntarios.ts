@@ -7,10 +7,15 @@ import { voluntarioSchema } from '../lib/schemas';
 
 const prisma = new PrismaClient();
 
-// Inicializamos el cliente de Supabase solo si tenemos las variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Inicializamos el cliente de Supabase de forma segura
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Supabase no está configurado');
+  }
+  return createClient(supabaseUrl, supabaseKey);
+}
 
 export async function crearVoluntario(formData: FormData) {
   try {
@@ -60,6 +65,13 @@ export async function crearVoluntario(formData: FormData) {
       // Convertir a Buffer (más seguro para Next.js Server Actions)
       const arrayBuffer = await foto.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
+
+      let supabase;
+      try {
+        supabase = getSupabase();
+      } catch (e) {
+        return { success: false, error: 'Faltan credenciales de Supabase en el servidor' };
+      }
 
       const { data, error } = await supabase
         .storage
@@ -173,6 +185,13 @@ export async function actualizarVoluntario(formData: FormData) {
       const arrayBuffer = await foto.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
+      let supabase;
+      try {
+        supabase = getSupabase();
+      } catch (e) {
+        return { success: false, error: 'Faltan credenciales de Supabase en el servidor' };
+      }
+
       const { error } = await supabase
         .storage
         .from('voluntarios')
@@ -244,7 +263,13 @@ export async function eliminarVoluntario(id: number) {
     if (existente.fotoUrl) {
       const nombreArchivoViejo = existente.fotoUrl.split('/').pop();
       if (nombreArchivoViejo) {
-        await supabase.storage.from('voluntarios').remove([nombreArchivoViejo]);
+        let supabase;
+        try {
+          supabase = getSupabase();
+          await supabase.storage.from('voluntarios').remove([nombreArchivoViejo]);
+        } catch (e) {
+          console.error("No se pudo borrar imagen en Supabase:", e);
+        }
       }
     }
 

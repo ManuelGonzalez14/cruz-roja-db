@@ -6,9 +6,15 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 const prisma = new PrismaClient();
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Inicializamos el cliente de Supabase de forma segura
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Supabase no está configurado');
+  }
+  return createClient(supabaseUrl, supabaseKey);
+}
 
 const cursoSchema = z.object({
   nombre: z.string().min(2, "El nombre del curso es muy corto"),
@@ -47,6 +53,13 @@ export async function agregarCurso(formData: FormData) {
       
       const arrayBuffer = await diploma.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
+
+      let supabase;
+      try {
+        supabase = getSupabase();
+      } catch (e) {
+        return { success: false, error: 'Faltan credenciales de Supabase en el servidor' };
+      }
 
       const { data, error } = await supabase
         .storage
@@ -98,7 +111,12 @@ export async function eliminarCurso(cursoId: number) {
       if (parts.length === 2) {
         const pathInBucket = parts[1]; // ej: 'diplomas/archivo.jpg'
         if (pathInBucket) {
-          await supabase.storage.from('voluntarios').remove([pathInBucket]);
+          try {
+            const supabase = getSupabase();
+            await supabase.storage.from('voluntarios').remove([pathInBucket]);
+          } catch (e) {
+            console.error("Error al borrar diploma en Supabase:", e);
+          }
         }
       }
     }

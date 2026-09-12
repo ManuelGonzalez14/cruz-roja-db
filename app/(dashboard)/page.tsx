@@ -29,11 +29,15 @@ export default async function DashboardPage(
     };
   }
 
-  const [voluntarios, totalVoluntarios, activos] = await Promise.all([
+  const [rawVoluntarios, totalVoluntarios, activos] = await Promise.all([
     prisma.voluntario.findMany(findArgs),
     prisma.voluntario.count(),
     prisma.voluntario.count({ where: { activo: true } })
   ]);
+
+  // Serializar los datos de Prisma a objetos planos para evitar errores de "Server Components render" en Vercel
+  const voluntarios = JSON.parse(JSON.stringify(rawVoluntarios));
+
 
   const inactivos = totalVoluntarios - activos;
 
@@ -96,7 +100,7 @@ export default async function DashboardPage(
               </tr>
             </thead>
             <tbody>
-              {voluntarios.map((voluntario) => {
+              {voluntarios.map((voluntario: any) => {
                 const iniciales = `${voluntario.nombre.charAt(0)}${voluntario.apellido.charAt(0)}`.toUpperCase();
                 
                 return (
