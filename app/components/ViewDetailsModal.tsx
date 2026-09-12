@@ -62,7 +62,7 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
           backgroundColor: 'var(--surface-color)',
           borderRadius: '24px',
           width: '100%',
-          maxWidth: '850px',
+          maxWidth: '1200px',
           maxHeight: '90vh',
           overflowY: 'auto',
           position: 'relative',
@@ -96,10 +96,10 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
           ✕
         </button>
 
-        <div style={{ padding: '2.5rem' }}>
+        <div style={{ padding: '1.5rem 2.5rem' }}>
           
           {/* Header Profile Section */}
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '2rem', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
             <div style={{ 
               width: '120px', 
               height: '120px', 
@@ -143,7 +143,7 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
           </div>
 
           {/* Grid Information */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.2fr', gap: '1.5rem' }}>
             
             {/* Columna Izquierda: Personal */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -260,48 +260,51 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
               </div>
             </div>
 
+            {/* Columna Derecha: Cursos */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <h3 style={{ margin: 0, color: 'var(--cruz-roja-red)', borderBottom: '2px solid rgba(239, 68, 68, 0.1)', paddingBottom: '0.5rem' }}>
+                📚 Capacitaciones y Cursos
+              </h3>
+              
+              {isLoadingCursos ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ height: '90px', backgroundColor: 'var(--bg-color-alt)', borderRadius: '12px', opacity: 0.5 }}></div>
+                  <div style={{ height: '90px', backgroundColor: 'var(--bg-color-alt)', borderRadius: '12px', opacity: 0.5 }}></div>
+                </div>
+              ) : cursos.length === 0 ? (
+                <div style={{ backgroundColor: 'var(--bg-color-alt)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                  No hay cursos registrados.
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                  {cursos.map(curso => (
+                    <div key={curso.id} style={{ 
+                      backgroundColor: 'var(--bg-color-alt)', 
+                      padding: '1rem 1.25rem', 
+                      borderRadius: '12px', 
+                      border: '1px solid var(--border-color)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between'
+                    }}>
+                      <div>
+                        <h4 style={{ margin: '0 0 0.25rem 0', color: 'var(--text-primary)', fontSize: '1rem' }}>{curso.nombre}</h4>
+                        <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{curso.institucion}</p>
+                      </div>
+                      {curso.diplomaUrl && (
+                        <a href={curso.diplomaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#059669', textDecoration: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          📄 Ver Diploma
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
           </div>
 
-          {/* Fila Inferior: Cursos */}
-          <div style={{ marginTop: '2.5rem', borderTop: '2px dashed var(--border-color)', paddingTop: '2rem' }}>
-            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--cruz-roja-red)' }}>
-              📚 Capacitaciones y Cursos Realizados
-            </h3>
-            {isLoadingCursos ? (
-              <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem' }}>
-                <div style={{ minWidth: '280px', height: '90px', backgroundColor: 'var(--bg-color-alt)', borderRadius: '12px', opacity: 0.5 }}></div>
-                <div style={{ minWidth: '280px', height: '90px', backgroundColor: 'var(--bg-color-alt)', borderRadius: '12px', opacity: 0.5 }}></div>
-              </div>
-            ) : cursos.length === 0 ? (
-              <div style={{ backgroundColor: 'var(--bg-color-alt)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                No hay cursos registrados para este voluntario.
-              </div>
-            ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
-                {cursos.map(curso => (
-                  <div key={curso.id} style={{ 
-                    backgroundColor: 'var(--bg-color-alt)', 
-                    padding: '1.25rem', 
-                    borderRadius: '12px', 
-                    border: '1px solid var(--border-color)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between'
-                  }}>
-                    <div>
-                      <h4 style={{ margin: '0 0 0.25rem 0', color: 'var(--text-primary)', fontSize: '1.05rem' }}>{curso.nombre}</h4>
-                      <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{curso.institucion}</p>
-                    </div>
-                    {curso.diplomaUrl && (
-                      <a href={curso.diplomaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#059669', textDecoration: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        📄 Ver Diploma
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+
 
         </div>
       </div>
