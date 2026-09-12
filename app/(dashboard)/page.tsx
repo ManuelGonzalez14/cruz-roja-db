@@ -1,10 +1,27 @@
 import { PrismaClient } from '@prisma/client';
 import DashboardHeader from '../components/DashboardHeader';
+import SearchBar from '../components/SearchBar';
 
 const prisma = new PrismaClient();
 
-export default async function DashboardPage() {
+export default async function DashboardPage(
+  props: {
+    searchParams?: Promise<{
+      q?: string;
+    }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.q || '';
+
   const voluntarios = await prisma.voluntario.findMany({
+    where: query ? {
+      OR: [
+        { nombre: { contains: query, mode: 'insensitive' } },
+        { apellido: { contains: query, mode: 'insensitive' } },
+        { cedula: { contains: query, mode: 'insensitive' } }
+      ]
+    } : undefined,
     orderBy: { creadoEn: 'desc' }
   });
 
@@ -43,10 +60,7 @@ export default async function DashboardPage() {
 
       {/* Barra de Herramientas */}
       <div className="toolbar">
-        <div className="search-container">
-          <span className="search-icon">🔍</span>
-          <input type="text" className="search-input" placeholder="Buscar por nombre o cédula..." />
-        </div>
+        <SearchBar />
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button className="btn-icon" title="Filtrar">
             <span style={{ fontSize: '1.2rem' }}>⚙️</span>
