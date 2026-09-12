@@ -83,8 +83,8 @@ export default async function DashboardPage() {
                   <tr key={voluntario.id}>
                     <td>
                       <div className="volunteer-profile">
-                        {voluntario.fotoUrl ? (
-                          <img src={voluntario.fotoUrl} alt={voluntario.nombre} className="avatar" />
+                        {(voluntario as any).fotoUrl ? (
+                          <img src={(voluntario as any).fotoUrl} alt={voluntario.nombre} className="avatar" />
                         ) : (
                           <div className="avatar">{iniciales}</div>
                         )}
