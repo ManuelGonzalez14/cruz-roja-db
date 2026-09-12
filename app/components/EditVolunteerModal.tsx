@@ -72,17 +72,17 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
       justifyContent: 'center', alignItems: 'center', zIndex: 1000
     }}>
       <div className="modal-content" style={{
-        backgroundColor: 'var(--surface-color)', padding: '2rem',
-        borderRadius: '16px', width: '100%', maxWidth: '500px',
+        backgroundColor: 'var(--surface-color)', padding: '2.5rem',
+        borderRadius: '16px', width: '100%', maxWidth: '550px',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
         maxHeight: '90vh', overflowY: 'auto'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
           <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Editar Voluntario</h2>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-tertiary)' }}>✕</button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
             <div style={{ 
@@ -124,38 +124,40 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
             <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
           </div>
 
-          <div className="input-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
-            <label style={{ marginBottom: 0 }}>Estado del Voluntario:</label>
+          <div className="input-group" style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--bg-color-alt)', borderRadius: '8px' }}>
+            <label style={{ marginBottom: 0, fontWeight: 600 }}>Estado del Voluntario</label>
             <button 
               type="button"
               onClick={() => setActivo(!activo)}
               style={{
                 padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold',
                 backgroundColor: activo ? 'rgba(16, 185, 129, 0.15)' : 'rgba(107, 114, 128, 0.15)',
-                color: activo ? '#059669' : '#4b5563'
+                color: activo ? '#059669' : '#4b5563',
+                transition: 'all 0.2s'
               }}
             >
               {activo ? 'ACTIVO ✅' : 'INACTIVO 💤'}
             </button>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', paddingTop: '2rem', borderTop: '1px solid var(--border-color)' }}>
             <button type="button" onClick={handleDelete} disabled={isDeleting} style={{
-              padding: '0.75rem 1rem', borderRadius: '8px', border: 'none',
+              padding: '0.75rem 1.25rem', borderRadius: '8px', border: 'none',
               background: 'rgba(239, 68, 68, 0.1)', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600,
-              opacity: isDeleting ? 0.7 : 1
+              opacity: isDeleting ? 0.7 : 1, whiteSpace: 'nowrap'
             }}>
-              {isDeleting ? 'Borrando...' : '🗑️ Eliminar Voluntario'}
+              {isDeleting ? 'Borrando...' : '🗑️ Eliminar'}
             </button>
 
             <div style={{ display: 'flex', gap: '1rem' }}>
               <button type="button" onClick={onClose} style={{
                 padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid var(--border-color)',
-                background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600
+                background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600,
+                whiteSpace: 'nowrap'
               }}>
                 Cancelar
               </button>
-              <button type="submit" className="primary-button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
+              <button type="submit" className="primary-button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1, whiteSpace: 'nowrap' }}>
                 {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
               </button>
             </div>

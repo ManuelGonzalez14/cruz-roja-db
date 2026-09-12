@@ -53,16 +53,16 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
       justifyContent: 'center', alignItems: 'center', zIndex: 1000
     }}>
       <div className="modal-content" style={{
-        backgroundColor: 'var(--surface-color)', padding: '2rem',
-        borderRadius: '16px', width: '100%', maxWidth: '500px',
+        backgroundColor: 'var(--surface-color)', padding: '2.5rem',
+        borderRadius: '16px', width: '100%', maxWidth: '550px',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
           <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Nuevo Voluntario</h2>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-tertiary)' }}>✕</button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Subida de foto */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>

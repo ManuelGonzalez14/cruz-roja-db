@@ -24,7 +24,7 @@ export async function crearVoluntario(formData: FormData) {
     const validatedFields = voluntarioSchema.safeParse(rawData);
 
     if (!validatedFields.success) {
-      return { success: false, error: validatedFields.error.errors[0].message };
+      return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
     const { nombre, apellido, cedula, telefono } = validatedFields.data;
@@ -107,7 +107,7 @@ export async function actualizarVoluntario(id: number, formData: FormData) {
     const validatedFields = voluntarioSchema.safeParse(rawData);
 
     if (!validatedFields.success) {
-      return { success: false, error: validatedFields.error.errors[0].message };
+      return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
     const { nombre, apellido, cedula, telefono, activo } = validatedFields.data;
