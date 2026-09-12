@@ -1,0 +1,167 @@
+"use client";
+
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { actualizarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
+
+interface Props {
+  voluntario: any;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Props) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(voluntario?.fotoUrl || null);
+  const [activo, setActivo] = useState<boolean>(voluntario?.activo ?? true);
+
+  if (!isOpen || !voluntario) return null;
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    const formData = new FormData(e.currentTarget);
+    formData.append('activo', activo.toString());
+    
+    const result = await actualizarVoluntario(voluntario.id, formData);
+    
+    if (result.success) {
+      toast.success('Voluntario actualizado exitosamente');
+      onClose();
+    } else {
+      toast.error(result.error || 'Ocurrió un error al guardar');
+    }
+    
+    setIsSubmitting(false);
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('¿Estás completamente seguro de eliminar a este voluntario? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    setIsDeleting(true);
+    const result = await eliminarVoluntario(voluntario.id);
+    
+    if (result.success) {
+      toast.success('Voluntario eliminado');
+      onClose();
+    } else {
+      toast.error(result.error || 'Ocurrió un error al eliminar');
+      setIsDeleting(false);
+    }
+  };
+
+  return (
+    <div className="modal-overlay" style={{
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+      justifyContent: 'center', alignItems: 'center', zIndex: 1000
+    }}>
+      <div className="modal-content" style={{
+        backgroundColor: 'var(--surface-color)', padding: '2rem',
+        borderRadius: '16px', width: '100%', maxWidth: '500px',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+        maxHeight: '90vh', overflowY: 'auto'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+          <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Editar Voluntario</h2>
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-tertiary)' }}>✕</button>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+            <div style={{ 
+              width: '100px', height: '100px', borderRadius: '50%', 
+              backgroundColor: 'var(--bg-color-alt)', border: '2px dashed var(--border-color)',
+              display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden',
+              cursor: 'pointer'
+            }} onClick={() => document.getElementById('fotoUploadEdit')?.click()}>
+              {previewUrl ? (
+                <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                <span style={{ fontSize: '2rem', color: 'var(--text-tertiary)' }}>📷</span>
+              )}
+            </div>
+            <label style={{ fontSize: '0.85rem', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600 }} htmlFor="fotoUploadEdit">
+              Cambiar Foto
+            </label>
+            <input type="file" id="fotoUploadEdit" name="foto" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="input-group">
+              <label>Nombre *</label>
+              <input type="text" name="nombre" required defaultValue={voluntario.nombre} className="search-input" />
+            </div>
+            <div className="input-group">
+              <label>Apellido *</label>
+              <input type="text" name="apellido" required defaultValue={voluntario.apellido} className="search-input" />
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label>Cédula *</label>
+            <input type="text" name="cedula" required defaultValue={voluntario.cedula} className="search-input" />
+          </div>
+
+          <div className="input-group">
+            <label>Teléfono</label>
+            <input type="tel" name="telefono" defaultValue={voluntario.telefono || ''} className="search-input" />
+          </div>
+
+          <div className="input-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
+            <label style={{ marginBottom: 0 }}>Estado del Voluntario:</label>
+            <button 
+              type="button"
+              onClick={() => setActivo(!activo)}
+              style={{
+                padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold',
+                backgroundColor: activo ? 'rgba(16, 185, 129, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                color: activo ? '#059669' : '#4b5563'
+              }}
+            >
+              {activo ? 'ACTIVO ✅' : 'INACTIVO 💤'}
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+            <button type="button" onClick={handleDelete} disabled={isDeleting} style={{
+              padding: '0.75rem 1rem', borderRadius: '8px', border: 'none',
+              background: 'rgba(239, 68, 68, 0.1)', color: 'var(--cruz-roja-red)', cursor: 'pointer', fontWeight: 600,
+              opacity: isDeleting ? 0.7 : 1
+            }}>
+              {isDeleting ? 'Borrando...' : '🗑️ Eliminar Voluntario'}
+            </button>
+
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button type="button" onClick={onClose} style={{
+                padding: '0.75rem 1.5rem', borderRadius: '8px', border: '1px solid var(--border-color)',
+                background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600
+              }}>
+                Cancelar
+              </button>
+              <button type="submit" className="primary-button" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
+                {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

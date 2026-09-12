@@ -86,3 +86,115 @@ export async function crearVoluntario(formData: FormData) {
     return { success: false, error: 'Error interno del servidor al guardar' };
   }
 }
+
+export async function actualizarVoluntario(id: number, formData: FormData) {
+  try {
+    const nombre = formData.get('nombre') as string;
+    const apellido = formData.get('apellido') as string;
+    const cedula = formData.get('cedula') as string;
+    const telefono = formData.get('telefono') as string;
+    const activo = formData.get('activo') === 'true';
+    const foto = formData.get('foto') as File | null;
+
+    if (!nombre || !apellido || !cedula) {
+      return { success: false, error: 'Nombre, apellido y cédula son requeridos' };
+    }
+
+    const existente = await prisma.voluntario.findUnique({ where: { id } });
+    if (!existente) {
+      return { success: false, error: 'Voluntario no encontrado' };
+    }
+
+    // Verificar si se intenta cambiar la cédula a una que ya existe en otro registro
+    if (cedula !== existente.cedula) {
+      const cedulaOcupada = await prisma.voluntario.findUnique({ where: { cedula } });
+      if (cedulaOcupada) {
+        return { success: false, error: 'Ya existe otro voluntario con esa cédula' };
+      }
+    }
+
+    let fotoUrl = existente.fotoUrl;
+
+    // Si hay una foto nueva, la subimos y borramos la vieja
+    if (foto && foto.size > 0) {
+      const extension = foto.name.split('.').pop();
+      const nombreArchivo = `voluntario-${Date.now()}.${extension}`;
+      
+      const arrayBuffer = await foto.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      const { error } = await supabase
+        .storage
+        .from('voluntarios')
+        .upload(nombreArchivo, buffer, {
+          contentType: foto.type,
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) {
+        return { success: false, error: `Supabase Error: ${error.message}` };
+      }
+
+      // Borrar foto anterior de Supabase si existía
+      if (fotoUrl) {
+        const nombreArchivoViejo = fotoUrl.split('/').pop();
+        if (nombreArchivoViejo) {
+          await supabase.storage.from('voluntarios').remove([nombreArchivoViejo]);
+        }
+      }
+
+      const { data: publicUrlData } = supabase
+        .storage
+        .from('voluntarios')
+        .getPublicUrl(nombreArchivo);
+
+      fotoUrl = publicUrlData.publicUrl;
+    }
+
+    await prisma.voluntario.update({
+      where: { id },
+      data: {
+        nombre,
+        apellido,
+        cedula,
+        telefono,
+        fotoUrl,
+        activo
+      }
+    });
+
+    revalidatePath('/');
+    return { success: true };
+  } catch (error) {
+    console.error('Error al actualizar voluntario:', error);
+    return { success: false, error: 'Error interno al actualizar' };
+  }
+}
+
+export async function eliminarVoluntario(id: number) {
+  try {
+    const existente = await prisma.voluntario.findUnique({ where: { id } });
+    if (!existente) {
+      return { success: false, error: 'Voluntario no encontrado' };
+    }
+
+    // Borrar foto de Supabase si tiene
+    if (existente.fotoUrl) {
+      const nombreArchivoViejo = existente.fotoUrl.split('/').pop();
+      if (nombreArchivoViejo) {
+        await supabase.storage.from('voluntarios').remove([nombreArchivoViejo]);
+      }
+    }
+
+    await prisma.voluntario.delete({
+      where: { id }
+    });
+
+    revalidatePath('/');
+    return { success: true };
+  } catch (error) {
+    console.error('Error al eliminar voluntario:', error);
+    return { success: false, error: 'Error interno al eliminar' };
+  }
+}

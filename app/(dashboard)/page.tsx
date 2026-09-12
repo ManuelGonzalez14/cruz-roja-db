@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import DashboardHeader from '../components/DashboardHeader';
 import SearchBar from '../components/SearchBar';
+import VolunteerActions from '../components/VolunteerActions';
 
 const prisma = new PrismaClient();
 
@@ -125,10 +126,7 @@ export default async function DashboardPage(
                   </td>
                   <td>{new Date(voluntario.creadoEn).toLocaleDateString('es-PA')}</td>
                   <td>
-                    <div className="table-actions">
-                      <button className="btn-icon" title="Ver Detalles">👁️</button>
-                      <button className="btn-icon" title="Editar">✏️</button>
-                    </div>
+                    <VolunteerActions voluntario={voluntario} />
                   </td>
                 </tr>
               );
