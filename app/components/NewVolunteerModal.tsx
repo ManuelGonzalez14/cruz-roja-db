@@ -87,8 +87,8 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'var(--surface-color)', padding: '2.5rem',
-        borderRadius: '16px', width: '100%', maxWidth: '700px',
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+        borderRadius: '16px', width: '100%', maxWidth: '850px',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
           <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Nuevo Voluntario</h2>

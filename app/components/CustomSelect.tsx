@@ -109,9 +109,9 @@ export default function CustomSelect({ name, options, value, onChange, placehold
               key={opt.value}
               onClick={() => handleSelect(opt.value)}
               style={{
-                padding: '0.75rem 1rem',
+                padding: '0.5rem 1rem',
                 cursor: 'pointer',
-                borderRadius: '12px',
+                borderRadius: '10px',
                 backgroundColor: currentValue === opt.value ? 'rgba(230, 0, 0, 0.08)' : 'transparent',
                 color: currentValue === opt.value ? 'var(--cruz-roja-red)' : 'var(--text-primary)',
                 fontWeight: currentValue === opt.value ? 600 : 400,
