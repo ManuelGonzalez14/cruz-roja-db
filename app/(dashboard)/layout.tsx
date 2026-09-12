@@ -1,11 +1,27 @@
 import React from 'react';
 import { cerrarSesion } from '../acciones/auth';
+import { cookies } from 'next/headers';
+import { PrismaClient } from '@prisma/client';
+import AdminMejorasButton from '../components/AdminMejorasButton';
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get('session_cruz_roja')?.value;
+  
+  let rol = 'ADMIN';
+  if (sessionId) {
+    const prisma = new PrismaClient();
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: parseInt(sessionId) }
+    });
+    if (usuario) {
+      rol = usuario.rol;
+    }
+  }
   return (
     <div className="app-layout">
       {/* Barra Lateral (Sidebar) */}
@@ -32,13 +48,24 @@ export default function DashboardLayout({
             Incidentes
           </a>
 
-          <div style={{ margin: '2rem 0 0.5rem 1rem', fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 'bold' }}>
-            👨‍💻 Desarrollador
-          </div>
-          <a href="/mejoras" className="nav-item">
-            <span className="nav-icon">💡</span>
-            Mejoras e Ideas
-          </a>
+          {rol === 'DESARROLLADOR' ? (
+            <>
+              <div style={{ margin: '2rem 0 0.5rem 1rem', fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 'bold' }}>
+                👨‍💻 Desarrollador
+              </div>
+              <a href="/mejoras" className="nav-item">
+                <span className="nav-icon">💡</span>
+                Mejoras e Ideas
+              </a>
+            </>
+          ) : (
+            <>
+              <div style={{ margin: '2rem 0 0.5rem 1rem', fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 'bold' }}>
+                📝 Sugerencias
+              </div>
+              <AdminMejorasButton />
+            </>
+          )}
         </nav>
 
         <div className="sidebar-footer">
