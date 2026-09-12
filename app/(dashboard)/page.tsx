@@ -17,9 +17,9 @@ export default async function DashboardPage(
   const voluntarios = await prisma.voluntario.findMany({
     where: query ? {
       OR: [
-        { nombre: { contains: query, mode: 'insensitive' } },
-        { apellido: { contains: query, mode: 'insensitive' } },
-        { cedula: { contains: query, mode: 'insensitive' } }
+        { nombre: { contains: query, mode: 'insensitive' as const } },
+        { apellido: { contains: query, mode: 'insensitive' as const } },
+        { cedula: { contains: query, mode: 'insensitive' as const } }
       ]
     } : undefined,
     orderBy: { creadoEn: 'desc' }
