@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { obtenerCursos } from '../acciones/voluntarios';
 
 interface Props {
   voluntario: any;
@@ -11,17 +12,30 @@ interface Props {
 export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Prevenir scroll en el body cuando el modal está abierto
+  const [cursos, setCursos] = useState<any[]>([]);
+  const [isLoadingCursos, setIsLoadingCursos] = useState(true);
+
+  // Prevenir scroll en el body cuando el modal está abierto y cargar cursos
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      if (voluntario?.id) {
+        setIsLoadingCursos(true);
+        obtenerCursos(voluntario.id).then(result => {
+          if (result.success && result.cursos) {
+            setCursos(result.cursos);
+          }
+          setIsLoadingCursos(false);
+        });
+      }
     } else {
       document.body.style.overflow = 'unset';
+      setCursos([]);
     }
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, voluntario]);
 
   if (!isOpen) return null;
 
@@ -247,6 +261,48 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
             </div>
 
           </div>
+
+          {/* Fila Inferior: Cursos */}
+          <div style={{ marginTop: '2.5rem', borderTop: '2px dashed var(--border-color)', paddingTop: '2rem' }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--cruz-roja-red)' }}>
+              📚 Capacitaciones y Cursos Realizados
+            </h3>
+            {isLoadingCursos ? (
+              <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem' }}>
+                <div style={{ minWidth: '280px', height: '90px', backgroundColor: 'var(--bg-color-alt)', borderRadius: '12px', opacity: 0.5 }}></div>
+                <div style={{ minWidth: '280px', height: '90px', backgroundColor: 'var(--bg-color-alt)', borderRadius: '12px', opacity: 0.5 }}></div>
+              </div>
+            ) : cursos.length === 0 ? (
+              <div style={{ backgroundColor: 'var(--bg-color-alt)', padding: '1.5rem', borderRadius: '12px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                No hay cursos registrados para este voluntario.
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+                {cursos.map(curso => (
+                  <div key={curso.id} style={{ 
+                    backgroundColor: 'var(--bg-color-alt)', 
+                    padding: '1.25rem', 
+                    borderRadius: '12px', 
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div>
+                      <h4 style={{ margin: '0 0 0.25rem 0', color: 'var(--text-primary)', fontSize: '1.05rem' }}>{curso.nombre}</h4>
+                      <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{curso.institucion}</p>
+                    </div>
+                    {curso.diplomaUrl && (
+                      <a href={curso.diplomaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: '#059669', textDecoration: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        📄 Ver Diploma
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
     </div>

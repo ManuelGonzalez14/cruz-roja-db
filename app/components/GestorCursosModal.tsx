@@ -171,7 +171,10 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
             <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Historial de Capacitaciones</h3>
             
             {isLoading ? (
-              <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>Cargando cursos...</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ height: '80px', backgroundColor: 'var(--bg-color)', borderRadius: '8px', opacity: 0.5 }}></div>
+                <div style={{ height: '80px', backgroundColor: 'var(--bg-color)', borderRadius: '8px', opacity: 0.5 }}></div>
+              </div>
             ) : cursos.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '2rem', border: '1px dashed var(--border-color)', borderRadius: '8px', color: 'var(--text-secondary)' }}>
                 No hay cursos registrados para este voluntario.
