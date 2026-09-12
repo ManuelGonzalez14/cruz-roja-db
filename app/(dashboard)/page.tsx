@@ -29,10 +29,12 @@ export default async function DashboardPage(
     };
   }
 
-  const voluntarios = await prisma.voluntario.findMany(findArgs);
+  const [voluntarios, totalVoluntarios, activos] = await Promise.all([
+    prisma.voluntario.findMany(findArgs),
+    prisma.voluntario.count(),
+    prisma.voluntario.count({ where: { activo: true } })
+  ]);
 
-  const totalVoluntarios = voluntarios.length;
-  const activos = voluntarios.filter(v => v.activo).length;
   const inactivos = totalVoluntarios - activos;
 
   return (
