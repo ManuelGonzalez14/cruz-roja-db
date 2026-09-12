@@ -313,7 +313,7 @@ body {
   width: 100%;
   padding: 1.1rem;
   background: #f9fafb;
-  border: 1.5px solid var(--border-color);
+  border: 1.5px solid rgba(239, 68, 68, 0.3); /* Rojo suave Cruz Roja */
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 1rem;
@@ -499,7 +499,7 @@ body {
 .search-input {
   width: 100%;
   padding: 0.85rem 1rem 0.85rem 2.5rem;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid rgba(239, 68, 68, 0.3); /* Rojo suave Cruz Roja */
   border-radius: 16px; /* Forma más redondeada y estética */
   font-size: 0.95rem;
   background-color: var(--bg-color-alt);

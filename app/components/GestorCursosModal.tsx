@@ -98,7 +98,8 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'var(--surface-color)', padding: '2.5rem',
-        borderRadius: '16px', width: '100%', maxWidth: '850px',
+        borderRadius: '16px', width: '100%', maxWidth: '800px',
+        border: '2px solid rgba(239, 68, 68, 0.3)',
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
         maxHeight: '90vh', display: 'flex', flexDirection: 'column'
       }}>

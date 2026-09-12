@@ -52,6 +52,7 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
           maxHeight: '90vh',
           overflowY: 'auto',
           position: 'relative',
+          border: '2px solid rgba(239, 68, 68, 0.3)',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         }}
       >
