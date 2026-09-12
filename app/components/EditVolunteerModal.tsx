@@ -3,6 +3,28 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { actualizarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
+import CustomSelect from './CustomSelect';
+
+const opcionesEspecialidad = [
+  { value: "Aspirante", label: "Aspirante" },
+  { value: "Voluntario", label: "Voluntario" },
+  { value: "Paramédico", label: "Paramédico" },
+  { value: "Rescatista", label: "Rescatista" },
+  { value: "Chofer", label: "Chofer" },
+  { value: "Apoyo Logístico", label: "Apoyo Logístico" },
+  { value: "Administrativo", label: "Administrativo" }
+];
+
+const opcionesSangre = [
+  { value: "A+", label: "A+" },
+  { value: "A-", label: "A-" },
+  { value: "B+", label: "B+" },
+  { value: "B-", label: "B-" },
+  { value: "AB+", label: "AB+" },
+  { value: "AB-", label: "AB-" },
+  { value: "O+", label: "O+" },
+  { value: "O-", label: "O-" }
+];
 
 interface Props {
   voluntario: any;
@@ -141,31 +163,22 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
               <div className="input-group">
                 <label>Especialidad</label>
-                <select name="especialidad" defaultValue={voluntario.especialidad || ''} className="search-input" style={{ backgroundColor: 'white' }}>
-                  <option value="">Seleccione especialidad...</option>
-                  <option value="Aspirante">Aspirante</option>
-                  <option value="Voluntario">Voluntario</option>
-                  <option value="Paramédico">Paramédico</option>
-                  <option value="Rescatista">Rescatista</option>
-                  <option value="Chofer">Chofer</option>
-                  <option value="Apoyo Logístico">Apoyo Logístico</option>
-                  <option value="Administrativo">Administrativo</option>
-                </select>
+                <CustomSelect 
+                  name="especialidad" 
+                  options={opcionesEspecialidad} 
+                  placeholder="Seleccione especialidad..." 
+                  value={voluntario.especialidad || ""}
+                />
               </div>
 
               <div className="input-group">
                 <label>Tipo de Sangre</label>
-                <select name="tipoSangre" defaultValue={voluntario.tipoSangre || ''} className="search-input" style={{ backgroundColor: 'white' }}>
-                  <option value="">Desconocido</option>
-                  <option value="A+">A+</option>
-                  <option value="A-">A-</option>
-                  <option value="B+">B+</option>
-                  <option value="B-">B-</option>
-                  <option value="O+">O+</option>
-                  <option value="O-">O-</option>
-                  <option value="AB+">AB+</option>
-                  <option value="AB-">AB-</option>
-                </select>
+                <CustomSelect 
+                  name="tipoSangre" 
+                  options={opcionesSangre} 
+                  placeholder="Desconocido" 
+                  value={voluntario.tipoSangre || ""}
+                />
               </div>
             </div>
 

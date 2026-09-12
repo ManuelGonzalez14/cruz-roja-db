@@ -1,8 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { agregarCurso, eliminarCurso, obtenerCursos } from '../acciones/cursos';
+import CustomSelect from './CustomSelect';
+
+const opcionesCursos = [
+  { value: "Primeros Auxilios Básicos (PAB)", label: "Primeros Auxilios Básicos (PAB)" },
+  { value: "Técnico en Urgencias Médicas (TUM)", label: "Técnico en Urgencias Médicas (TUM)" },
+  { value: "Asistente de Primeros Auxilios (APA)", label: "Asistente de Primeros Auxilios (APA)" },
+  { value: "RCP y Uso de DEA", label: "RCP y Uso de DEA" },
+  { value: "Apoyo Psicosocial (APS)", label: "Apoyo Psicosocial (APS)" },
+  { value: "Manejo de Incidentes (SCI)", label: "Manejo de Incidentes (SCI)" },
+  { value: "Conducción de Vehículos de Emergencia (COVE)", label: "Conducción de Vehículos de Emergencia (COVE)" },
+  { value: "Otro", label: "Otro (Especificar...)" }
+];
 
 interface GestorCursosModalProps {
   isOpen: boolean;
@@ -109,29 +121,19 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                 <div className="input-group">
                   <label>Nombre del Curso *</label>
-                  <select 
+                  <CustomSelect 
                     name={isCustomCurso ? "" : "nombre"} 
-                    className="search-input" 
-                    style={{ backgroundColor: 'white' }}
+                    options={opcionesCursos}
+                    placeholder="Seleccione un curso..."
                     required={!isCustomCurso}
-                    onChange={(e) => {
-                      if (e.target.value === 'Otro') {
+                    onChange={(value) => {
+                      if (value === 'Otro') {
                         setIsCustomCurso(true);
                       } else {
                         setIsCustomCurso(false);
                       }
                     }}
-                  >
-                    <option value="">Seleccione un curso...</option>
-                    <option value="Primeros Auxilios Básicos (PAB)">Primeros Auxilios Básicos (PAB)</option>
-                    <option value="Técnico en Urgencias Médicas (TUM)">Técnico en Urgencias Médicas (TUM)</option>
-                    <option value="Asistente de Primeros Auxilios (APA)">Asistente de Primeros Auxilios (APA)</option>
-                    <option value="RCP y Uso de DEA">RCP y Uso de DEA</option>
-                    <option value="Apoyo Psicosocial (APS)">Apoyo Psicosocial (APS)</option>
-                    <option value="Manejo de Incidentes (SCI)">Manejo de Incidentes (SCI)</option>
-                    <option value="Conducción de Vehículos de Emergencia (COVE)">Conducción de Vehículos de Emergencia (COVE)</option>
-                    <option value="Otro">Otro (Especificar...)</option>
-                  </select>
+                  />
                   {isCustomCurso && (
                     <input 
                       type="text" 
