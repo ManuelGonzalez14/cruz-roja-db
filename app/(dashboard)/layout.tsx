@@ -24,9 +24,9 @@ export default async function DashboardLayout({
     if (usuario) {
       rol = usuario.rol;
       if (usuario.voluntario) {
-        nombreVoluntario = usuario.voluntario.nombre.split(' ')[0]; // Solo primer nombre
+        nombreVoluntario = usuario.voluntario.nombre.split(' ')[0] || 'Voluntario'; // Solo primer nombre
       } else {
-        nombreVoluntario = usuario.email.split('@')[0]; // Fallback to email prefix if no profile
+        nombreVoluntario = usuario.email.split('@')[0] || 'Usuario'; // Fallback to email prefix if no profile
       }
     }
   }
