@@ -2,6 +2,8 @@ import { PrismaClient } from '@prisma/client';
 import DashboardHeader from '../components/DashboardHeader';
 import SearchBar from '../components/SearchBar';
 import VolunteerActions from '../components/VolunteerActions';
+import VolunteerDashboard from '../components/VolunteerDashboard';
+import { cookies } from 'next/headers';
 
 const prisma = new PrismaClient();
 
@@ -15,6 +17,55 @@ export default async function DashboardPage(
   const searchParams = await props.searchParams;
   const query = searchParams?.q || '';
 
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get('session_cruz_roja')?.value;
+  let rol = 'ADMIN';
+  
+  let voluntarioId: number | null = null;
+  
+  if (sessionId) {
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: parseInt(sessionId) }
+    });
+    if (usuario) {
+      rol = usuario.rol;
+      voluntarioId = usuario.voluntarioId;
+    }
+  }
+
+  const tempRol = cookieStore.get('temp_rol')?.value;
+  if (tempRol) rol = tempRol;
+
+  if (rol === 'VOLUNTARIO') {
+    if (!voluntarioId) {
+      return (
+        <div style={{ padding: '4rem', textAlign: 'center', backgroundColor: '#f3f4f6', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: 'white', padding: '2rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', maxWidth: '400px' }}>
+            <h2 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>Perfil no vinculado</h2>
+            <p style={{ color: 'var(--text-secondary)' }}>Tu cuenta no está vinculada a ningún perfil de voluntario. Por favor, contacta a un administrador.</p>
+          </div>
+        </div>
+      );
+    }
+
+    const voluntarioData = await prisma.voluntario.findUnique({
+      where: { id: voluntarioId },
+      include: { cursos: true }
+    });
+    
+    if (!voluntarioData) {
+      return <div style={{ padding: '3rem', textAlign: 'center' }}>No se pudo cargar la información del voluntario.</div>;
+    }
+
+    return (
+      <VolunteerDashboard 
+        voluntario={voluntarioData} 
+        cursos={voluntarioData.cursos || []} 
+      />
+    );
+  }
+
+  // --- VISTA DE ADMINISTRADOR ---
   const findArgs: any = {
     orderBy: { creadoEn: 'desc' }
   };
@@ -38,11 +89,10 @@ export default async function DashboardPage(
   // Serializar los datos de Prisma a objetos planos para evitar errores de "Server Components render" en Vercel
   const voluntarios = JSON.parse(JSON.stringify(rawVoluntarios));
 
-
   const inactivos = totalVoluntarios - activos;
 
   return (
-    <main className="container">
+    <div className="page-container">
       <DashboardHeader />
 
       {/* Estadísticas Rápidas */}
@@ -140,6 +190,6 @@ export default async function DashboardPage(
           </table>
         )}
       </div>
-    </main>
+    </div>
   );
 }

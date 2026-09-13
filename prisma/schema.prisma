@@ -27,10 +27,12 @@ model Voluntario {
   tallaUniforme   String?
   contactoEmergNombre    String?
   contactoEmergTelefono  String?
+  contactoEmergParentesco String?
   activo          Boolean  @default(true)
   fotoUrl         String?
   creadoEn    DateTime @default(now())
   cursos      Curso[]
+  usuario     Usuario?
 }
 
 model Curso {
@@ -49,8 +51,12 @@ model Usuario {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String   // Aquí guardaremos la contraseña cifrada
-  rol       String   @default("ADMIN") // Ejemplo: ADMIN, DESARROLLADOR
+  rol       String   @default("ADMIN") // Ejemplo: ADMIN, DESARROLLADOR, VOLUNTARIO
   creadoEn  DateTime @default(now())
+  
+  // Relación opcional con el perfil de Voluntario
+  voluntarioId Int?       @unique
+  voluntario   Voluntario? @relation(fields: [voluntarioId], references: [id], onDelete: Cascade)
 }
 
 // Modelo para registrar las mejoras e ideas del desarrollador
@@ -61,3 +67,25 @@ model Mejora {
   estado      String   @default("Pendiente") // Pendiente, En Progreso, Completado
   creadoEn    DateTime @default(now())
 }
+
+// Modelos para Ambulancias e Inventario
+model Ambulancia {
+  id          Int      @id @default(autoincrement())
+  placa       String   @unique
+  modelo      String?
+  estado      String   @default("Operativa") // Operativa, En Taller, Fuera de Servicio
+  creadoEn    DateTime @default(now())
+  insumos     InsumoAmbulancia[]
+}
+
+model InsumoAmbulancia {
+  id              Int        @id @default(autoincrement())
+  nombre          String
+  cantidad        Int        @default(0)
+  categoria       String?    // Medicamentos, Equipos, Material Gastable
+  fechaExpiracion DateTime?
+  ambulanciaId    Int
+  ambulancia      Ambulancia @relation(fields: [ambulanciaId], references: [id], onDelete: Cascade)
+  actualizadoEn   DateTime   @updatedAt
+}
+

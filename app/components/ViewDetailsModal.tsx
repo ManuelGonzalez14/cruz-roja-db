@@ -205,6 +205,16 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>👨‍👩‍👧‍👦</div>
+                  <div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 600 }}>Parentesco</div>
+                    <div style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 500 }}>
+                      {voluntario.contactoEmergParentesco || 'No especificado'}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                   <div style={{ fontSize: '1.5rem', opacity: 0.7 }}>📞</div>
                   <div>
                     <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 600 }}>Teléfono de Emergencia</div>

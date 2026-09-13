@@ -35,6 +35,7 @@ export async function crearVoluntario(formData: FormData) {
       tallaUniforme: (formData.get('tallaUniforme') as string) || '',
       contactoEmergNombre: (formData.get('contactoEmergNombre') as string) || '',
       contactoEmergTelefono: (formData.get('contactoEmergTelefono') as string) || '',
+      contactoEmergParentesco: (formData.get('contactoEmergParentesco') as string) || '',
     };
 
     const validatedFields = voluntarioSchema.safeParse(rawData);
@@ -43,7 +44,7 @@ export async function crearVoluntario(formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono, contactoEmergParentesco } = validatedFields.data;
     const foto = formData.get('foto') as File | null;
 
     // Verificar si ya existe un voluntario con esa cédula
@@ -114,6 +115,7 @@ export async function crearVoluntario(formData: FormData) {
         tallaUniforme: tallaUniforme || null,
         contactoEmergNombre: contactoEmergNombre || null,
         contactoEmergTelefono: contactoEmergTelefono || null,
+        contactoEmergParentesco: contactoEmergParentesco || null,
         fotoUrl
       }
     });
@@ -149,6 +151,7 @@ export async function actualizarVoluntario(formData: FormData) {
       tallaUniforme: (formData.get('tallaUniforme') as string) || '',
       contactoEmergNombre: (formData.get('contactoEmergNombre') as string) || '',
       contactoEmergTelefono: (formData.get('contactoEmergTelefono') as string) || '',
+      contactoEmergParentesco: (formData.get('contactoEmergParentesco') as string) || '',
       activo: formData.get('activo') === 'true'
     };
 
@@ -158,7 +161,7 @@ export async function actualizarVoluntario(formData: FormData) {
       return { success: false, error: validatedFields.error?.issues[0]?.message || 'Datos inválidos' };
     }
 
-    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono } = validatedFields.data;
+    const { nombre, segundoNombre, apellido, segundoApellido, cedula, numeroCarnet, telefono, especialidad, tipoSangre, alergias, fechaNacimiento, direccion, tallaUniforme, contactoEmergNombre, contactoEmergTelefono, contactoEmergParentesco } = validatedFields.data;
     const activo = rawData.activo;
     const foto = formData.get('foto') as File | null;
 
@@ -239,6 +242,7 @@ export async function actualizarVoluntario(formData: FormData) {
         tallaUniforme: tallaUniforme || null,
         contactoEmergNombre: contactoEmergNombre || null,
         contactoEmergTelefono: contactoEmergTelefono || null,
+        contactoEmergParentesco: contactoEmergParentesco || null,
         fotoUrl,
         activo
       }

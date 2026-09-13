@@ -204,13 +204,17 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
 
               <div style={{ marginTop: '1rem' }}>
                 <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>🆘 Contacto de Emergencia</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '0.5rem' }}>
                   <div className="input-group">
-                    <label>Nombre de Contacto</label>
+                    <label>Nombre</label>
                     <input type="text" name="contactoEmergNombre" defaultValue={voluntario.contactoEmergNombre || ''} placeholder="Familiar o Amigo" className="search-input" />
                   </div>
                   <div className="input-group">
-                    <label>Teléfono de Emergencia</label>
+                    <label>Parentesco</label>
+                    <input type="text" name="contactoEmergParentesco" defaultValue={voluntario.contactoEmergParentesco || ''} placeholder="Padre, Madre..." className="search-input" />
+                  </div>
+                  <div className="input-group">
+                    <label>Teléfono</label>
                     <input type="tel" name="contactoEmergTelefono" defaultValue={voluntario.contactoEmergTelefono || ''} placeholder="6123-4567" className="search-input" />
                   </div>
                 </div>

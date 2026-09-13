@@ -30,5 +30,6 @@ export const voluntarioSchema = z.object({
   tallaUniforme: z.string().optional().or(z.literal('')),
   contactoEmergNombre: z.string().optional().or(z.literal('')),
   contactoEmergTelefono: z.string().optional().or(z.literal('')),
+  contactoEmergParentesco: z.string().optional().or(z.literal('')),
   activo: z.boolean().optional(),
 });
