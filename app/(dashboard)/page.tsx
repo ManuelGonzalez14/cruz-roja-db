@@ -145,6 +145,7 @@ export default async function DashboardPage(
               <tr>
                 <th>Nombre Completo</th>
                 <th>Cédula</th>
+                <th>N° de Carnet</th>
                 <th>Estado</th>
                 <th>Acciones</th>
               </tr>
@@ -169,6 +170,7 @@ export default async function DashboardPage(
                       </div>
                     </td>
                   <td>{voluntario.cedula}</td>
+                  <td>{voluntario.numeroCarnet || '-'}</td>
                   <td>
                     {voluntario.activo ? (
                       <span style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
