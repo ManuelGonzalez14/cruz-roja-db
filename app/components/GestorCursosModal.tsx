@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import { Plus, X, FileText, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { agregarCurso, eliminarCurso, obtenerCursos } from '../acciones/cursos';
 import CustomSelect from './CustomSelect';
@@ -52,7 +54,13 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
     };
   }, [isOpen, voluntario]);
 
-  if (!isOpen || !voluntario) return null;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !voluntario || !mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,27 +82,62 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
     }
   };
 
-  const handleDelete = async (cursoId: number) => {
-    if (!confirm('¿Seguro que deseas eliminar este curso? También se borrará el diploma.')) return;
-    
-    setIsDeleting(cursoId);
-    const result = await eliminarCurso(cursoId);
-    setIsDeleting(null);
+  const handleDelete = (cursoId: number) => {
+    toast((t) => (
+      <>
+        {typeof document !== 'undefined' && ReactDOM.createPortal(
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(5px)',
+            zIndex: 9998
+          }} />,
+          document.body
+        )}
+        <div style={{ padding: '0.5rem', position: 'relative', zIndex: 9999 }}>
+          <h4 style={{ margin: '0 0 0.5rem 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            ⚠️ Confirmar Eliminación
+          </h4>
+          <p style={{ margin: '0 0 1rem 0', color: '#4b5563', fontSize: '0.95rem' }}>
+            ¿Seguro que deseas eliminar este curso? También se borrará el diploma.
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <button 
+              onClick={() => toast.dismiss(t.id)} 
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #d1d5db', background: 'transparent', cursor: 'pointer', fontWeight: 500, color: '#374151' }}
+            >
+              Cancelar
+            </button>
+            <button 
+              onClick={async () => {
+                toast.dismiss(t.id);
+                setIsDeleting(cursoId);
+                const result = await eliminarCurso(cursoId);
+                setIsDeleting(null);
 
-    if (result.success) {
-      toast.success('Curso eliminado');
-      cargarCursos();
-    } else {
-      toast.error(result.error || 'Error al eliminar');
-    }
+                if (result.success) {
+                  toast.success('Curso eliminado');
+                  cargarCursos();
+                } else {
+                  toast.error(result.error || 'Error al eliminar');
+                }
+              }}
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', cursor: 'pointer', fontWeight: 500 }}
+            >
+              Sí, eliminar
+            </button>
+          </div>
+        </div>
+      </>
+    ), { duration: Infinity });
   };
 
-  return (
-    <div style={{
+  const modalContent = (
+    <div className="modal-overlay" style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex',
+      backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
       justifyContent: 'center', alignItems: 'center', zIndex: 1000,
-      padding: '1rem'
+      padding: '2rem'
     }}>
       <div className="modal-content" style={{
         backgroundColor: 'var(--surface-color)', padding: '2.5rem',
@@ -214,4 +257,6 @@ export default function GestorCursosModal({ isOpen, onClose, voluntario }: Gesto
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }

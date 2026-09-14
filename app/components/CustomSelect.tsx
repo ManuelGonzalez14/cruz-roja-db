@@ -63,13 +63,12 @@ export default function CustomSelect({ name, options, value, onChange, placehold
 
       {/* Botón que abre el menú */}
       <div 
-        className="search-input"
+        className="search-input custom-select-btn"
         style={{ 
           cursor: 'pointer', 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center',
-          backgroundColor: 'white',
           userSelect: 'none',
           borderColor: isOpen ? 'var(--cruz-roja-red)' : 'var(--border-color)',
           boxShadow: isOpen ? '0 0 0 3px rgba(239, 68, 68, 0.15)' : 'none'
@@ -86,17 +85,16 @@ export default function CustomSelect({ name, options, value, onChange, placehold
 
       {/* Menú Desplegable Flotante */}
       {isOpen && (
-        <div style={{
+        <div className="custom-select-dropdown" style={{
           position: 'absolute',
           top: '100%',
           left: 0,
           right: 0,
           marginTop: '8px',
-          backgroundColor: 'white',
           border: '1px solid var(--border-color)',
           borderRadius: '16px',
           boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-          zIndex: 9999, /* Para que aparezca por encima de todo */
+          zIndex: 9999,
           maxHeight: '250px',
           overflowY: 'auto',
           padding: '0.5rem'
@@ -107,22 +105,8 @@ export default function CustomSelect({ name, options, value, onChange, placehold
           {options.map((opt) => (
             <div
               key={opt.value}
+              className={`custom-select-option ${currentValue === opt.value ? 'selected' : ''}`}
               onClick={() => handleSelect(opt.value)}
-              style={{
-                padding: '0.5rem 1rem',
-                cursor: 'pointer',
-                borderRadius: '10px',
-                backgroundColor: currentValue === opt.value ? 'rgba(230, 0, 0, 0.08)' : 'transparent',
-                color: currentValue === opt.value ? 'var(--cruz-roja-red)' : 'var(--text-primary)',
-                fontWeight: currentValue === opt.value ? 600 : 400,
-                transition: 'background-color 0.2s'
-              }}
-              onMouseEnter={(e) => {
-                if (currentValue !== opt.value) e.currentTarget.style.backgroundColor = '#f3f4f6';
-              }}
-              onMouseLeave={(e) => {
-                if (currentValue !== opt.value) e.currentTarget.style.backgroundColor = 'transparent';
-              }}
             >
               {opt.label}
             </div>

@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import { PrismaClient } from '@prisma/client';
 import AdminMejorasButton from '../components/AdminMejorasButton';
 import NavLink from '../components/NavLink';
+import ThemeToggle from '../components/ThemeToggle';
+import UserNav from '../components/UserNav';
 
 export default async function DashboardLayout({
   children,
@@ -70,8 +72,15 @@ export default async function DashboardLayout({
               <>
                 <NavLink href="/" className="" exact>Voluntarios</NavLink>
                 <NavLink href="/ambulancias" className="">Ambulancias</NavLink>
+                <NavLink href="/gestionar-turnos" className="">Turnos</NavLink>
+                <NavLink href="/gestionar-capacitaciones" className="">Capacitaciones</NavLink>
+                <NavLink href="/gestionar-comunidad" className="">Comunidad</NavLink>
+                <NavLink href="/gestionar-soporte" className="">Soporte</NavLink>
                 {isDesarrollador ? (
-                  <NavLink href="/mejoras" className="">Mejoras e Ideas</NavLink>
+                  <>
+                    <NavLink href="/mejoras" className="">Mejoras e Ideas</NavLink>
+                    <NavLink href="/dev-logs" className="">Logs del Sistema</NavLink>
+                  </>
                 ) : (
                   <AdminMejorasButton variant="top" />
                 )}
@@ -79,21 +88,11 @@ export default async function DashboardLayout({
             )}
           </nav>
 
-          <div className="user-mini-profile">
-            {isDesarrollador ? (
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--cruz-roja-red)', fontSize: '1.4rem', fontWeight: 900, flexShrink: 0, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
-                ✚
-              </div>
-            ) : (
-              <img 
-                src={isVoluntario ? "https://i.pravatar.cc/150?img=47" : "https://i.pravatar.cc/150?img=11"} 
-                alt="Profile" 
-              />
-            )}
-            <span style={{ textTransform: 'capitalize' }}>
-              {isDesarrollador ? `${nombreVoluntario} DEV` : nombreVoluntario} ⌄
-            </span>
-          </div>
+          <UserNav 
+            nombreVoluntario={nombreVoluntario}
+            isVoluntario={isVoluntario}
+            isDesarrollador={isDesarrollador}
+          />
         </header>
 
         {/* BODY */}
@@ -113,6 +112,10 @@ export default async function DashboardLayout({
               <>
                 <NavLink href="/" className="icon-btn" exact tooltip="Voluntarios">👥</NavLink>
                 <NavLink href="/ambulancias" className="icon-btn" tooltip="Ambulancias">🚑</NavLink>
+                <NavLink href="/gestionar-turnos" className="icon-btn" tooltip="Turnos">📅</NavLink>
+                <NavLink href="/gestionar-capacitaciones" className="icon-btn" tooltip="Capacitaciones">📚</NavLink>
+                <NavLink href="/gestionar-comunidad" className="icon-btn" tooltip="Comunidad Admin">📰</NavLink>
+                <NavLink href="/gestionar-soporte" className="icon-btn" tooltip="Soporte Admin">❓</NavLink>
                 {isDesarrollador ? (
                   <NavLink href="/mejoras" className="icon-btn" tooltip="Mejoras e Ideas">💡</NavLink>
                 ) : (

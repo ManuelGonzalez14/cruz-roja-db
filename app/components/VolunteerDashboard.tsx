@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { logClientAction } from '../lib/clientLogger';
 
 const SimpleCalendar = () => {
   const days = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
@@ -10,13 +11,13 @@ const SimpleCalendar = () => {
   return (
     <div className="vd-calendar">
       <div className="vd-cal-header">
-        <button className="vd-cal-btn">‹</button>
+        <button className="vd-cal-btn">â€¹</button>
         <h4>{new Date().toLocaleDateString('es-PA', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())}</h4>
-        <button className="vd-cal-btn">›</button>
+        <button className="vd-cal-btn">â€º</button>
       </div>
       <div className="vd-cal-grid">
         {days.map((d, i) => <div key={i} className="vd-cal-day-name">{d}</div>)}
-        {/* Espacios vacíos de ejemplo para empezar el mes en martes */}
+        {/* Espacios vacÃ­os de ejemplo para empezar el mes en martes */}
         <div></div><div></div>
         {dates.map(d => (
           <div key={d} className={`vd-cal-date ${d === currentDay ? 'vd-cal-today' : ''}`}>
@@ -41,29 +42,8 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
       {/* Header Profile Section */}
       <div className="vd-header">
         <div className="vd-welcome">
-          <h1>¡Bienvenido de nuevo,</h1>
+          <h1>Â¡Bienvenido de nuevo,</h1>
           <h2>{nombreCompleto}!</h2>
-        </div>
-        <div className="vd-header-actions">
-          <div className="vd-search">
-            <span className="search-icon">🔍</span>
-            <input type="text" placeholder="Buscar cursos..." />
-          </div>
-          <button className="vd-icon-btn">🔔<span className="vd-badge">1</span></button>
-          <div className="vd-profile-mini">
-            {voluntario.fotoUrl ? (
-              <img src={voluntario.fotoUrl} alt={voluntario.nombre} />
-            ) : (
-              <div className="vd-avatar-fallback">{iniciales}</div>
-            )}
-            <div className="vd-profile-info">
-              <span className="vd-profile-name">{voluntario.nombre}</span>
-              <span className="vd-profile-status">
-                <span className="status-dot"></span> {voluntario.activo ? 'Activo' : 'Inactivo'}
-              </span>
-            </div>
-            <span className="vd-chevron">⌄</span>
-          </div>
         </div>
       </div>
 
@@ -74,7 +54,7 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
         <div className="vd-card glass-card">
           <div className="vd-card-header">
             <h3>Tiempo de Servicio Activo</h3>
-            <span className="vd-dots">•••</span>
+            <span className="vd-dots">â€¢â€¢â€¢</span>
           </div>
           <div className="vd-stats-big">
             <span className="vd-number">{mesesVoluntario}</span>
@@ -102,8 +82,8 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
         {/* Latest News / Courses Card */}
         <div className="vd-card glass-card vd-news-card">
           <div className="vd-card-header">
-            <h3>Últimos Cursos Registrados</h3>
-            <span className="vd-dots">•••</span>
+            <h3>Ãšltimos Cursos Registrados</h3>
+            <span className="vd-dots">â€¢â€¢â€¢</span>
           </div>
           <div className="vd-news-list">
             {cursos.length === 0 ? (
@@ -111,7 +91,7 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
             ) : (
               cursos.slice(0, 3).map(curso => (
                 <div className="vd-news-item" key={curso.id}>
-                  <div className="vd-news-img">📚</div>
+                  <div className="vd-news-img">ðŸ“š</div>
                   <div className="vd-news-content">
                     <h4>{curso.nombre}</h4>
                     <p>{curso.institucion}</p>
@@ -126,13 +106,13 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
         <div className="vd-card red-gradient-card vd-highlight-card">
           <div className="vd-card-header">
             <h3>Estado del Voluntario</h3>
-            <span className="vd-dots" style={{ color: 'white' }}>•••</span>
+            <span className="vd-dots" style={{ color: 'white' }}>â€¢â€¢â€¢</span>
           </div>
           <div className="vd-highlight-content">
             <div className="vd-highlight-info">
-              <p>👤 <strong>Especialidad:</strong> {voluntario.especialidad || 'No asignada'}</p>
-              <p>🩸 <strong>Tipo de Sangre:</strong> {voluntario.tipoSangre || 'Desconocido'}</p>
-              <p>👕 <strong>Talla:</strong> {voluntario.tallaUniforme || 'No especificada'}</p>
+              <p>ðŸ‘¤ <strong>Especialidad:</strong> {voluntario.especialidad || 'No asignada'}</p>
+              <p>ðŸ©¸ <strong>Tipo de Sangre:</strong> {voluntario.tipoSangre || 'Desconocido'}</p>
+              <p>ðŸ‘• <strong>Talla:</strong> {voluntario.tallaUniforme || 'No especificada'}</p>
             </div>
             <button className="vd-btn-white">ACTUALIZAR PERFIL</button>
           </div>
@@ -145,14 +125,14 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
         <div className="vd-card glass-card">
           <div className="vd-card-header">
             <h3>Actividades Recientes</h3>
-            <span className="vd-dots">•••</span>
+            <span className="vd-dots">â€¢â€¢â€¢</span>
           </div>
           <div className="vd-activities-list">
             <div className="vd-activity-item">
-              <div className="vd-activity-icon">✅</div>
+              <div className="vd-activity-icon">âœ…</div>
               <div className="vd-activity-details">
                 <h4>Ingreso al Sistema</h4>
-                <p>{new Date(voluntario.creadoEn).toLocaleDateString('es-PA')} • Registro Oficial</p>
+                <p>{new Date(voluntario.creadoEn).toLocaleDateString('es-PA')} â€¢ Registro Oficial</p>
               </div>
             </div>
           </div>
@@ -169,16 +149,16 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
         {/* Training Progress */}
         <div className="vd-card glass-card">
           <div className="vd-card-header">
-            <h3>Progreso de Capacitación</h3>
+            <h3>Progreso de CapacitaciÃ³n</h3>
           </div>
           <div className="vd-progress-list">
             <div className="vd-progress-item">
-              <div className="vd-progress-icon">🚑</div>
+              <div className="vd-progress-icon">ðŸš‘</div>
               <div className="vd-progress-text">
                 <h4>Cursos Completados</h4>
                 <p>{cursos.length} certificados</p>
               </div>
-              <span className="vd-chevron-right">›</span>
+              <span className="vd-chevron-right">â€º</span>
             </div>
           </div>
         </div>
@@ -186,3 +166,4 @@ export default function VolunteerDashboard({ voluntario, cursos }: { voluntario:
     </div>
   );
 }
+

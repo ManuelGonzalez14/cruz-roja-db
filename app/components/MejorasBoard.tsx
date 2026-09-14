@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { Plus, ThumbsUp, MessageSquare, ExternalLink, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { crearMejora, actualizarEstadoMejora, eliminarMejora } from '../acciones/mejoras';
 
@@ -47,19 +49,54 @@ export default function MejorasBoard({ initialMejoras }: { initialMejoras: Mejor
     }
   };
 
-  const handleEliminarMejora = async (id: number) => {
-    if (!confirm('¿Estás seguro de eliminar esta idea?')) return;
-    
-    const previousMejoras = [...mejoras];
-    setMejoras(mejoras.filter(m => m.id !== id));
-    
-    const result = await eliminarMejora(id);
-    if (!result.success) {
-      toast.error('Error al eliminar');
-      setMejoras(previousMejoras); // Rollback
-    } else {
-      toast.success('Idea eliminada');
-    }
+  const handleEliminarMejora = (id: number) => {
+    toast((t) => (
+      <>
+        {typeof document !== 'undefined' && ReactDOM.createPortal(
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(5px)',
+            zIndex: 9998
+          }} />,
+          document.body
+        )}
+        <div style={{ padding: '0.5rem', position: 'relative', zIndex: 9999 }}>
+          <h4 style={{ margin: '0 0 0.5rem 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            ⚠️ Confirmar Eliminación
+          </h4>
+          <p style={{ margin: '0 0 1rem 0', color: '#4b5563', fontSize: '0.95rem' }}>
+            ¿Estás seguro de eliminar esta idea?
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <button 
+              onClick={() => toast.dismiss(t.id)} 
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #d1d5db', background: 'transparent', cursor: 'pointer', fontWeight: 500, color: '#374151' }}
+            >
+              Cancelar
+            </button>
+            <button 
+              onClick={async () => {
+                toast.dismiss(t.id);
+                const previousMejoras = [...mejoras];
+                setMejoras(mejoras.filter(m => m.id !== id));
+                
+                const result = await eliminarMejora(id);
+                if (!result.success) {
+                  toast.error('Error al eliminar');
+                  setMejoras(previousMejoras); // Rollback
+                } else {
+                  toast.success('Idea eliminada');
+                }
+              }}
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', cursor: 'pointer', fontWeight: 500 }}
+            >
+              Sí, eliminar
+            </button>
+          </div>
+        </div>
+      </>
+    ), { duration: Infinity });
   };
 
   return (

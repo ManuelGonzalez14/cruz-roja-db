@@ -8,7 +8,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// Aquí definiremos las tablas de la base de datos
+// AquÃ­ definiremos las tablas de la base de datos
 // Ejemplo: Tabla para registrar Voluntarios
 model Voluntario {
   id          Int      @id @default(autoincrement())
@@ -33,6 +33,9 @@ model Voluntario {
   creadoEn    DateTime @default(now())
   cursos      Curso[]
   usuario     Usuario?
+  turnos      TurnoVoluntario[]
+  capacitaciones CapacitacionInscripcion[]
+  ticketsSoporte TicketSoporte[]
 }
 
 model Curso {
@@ -50,13 +53,14 @@ model Curso {
 model Usuario {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  password  String   // Aquí guardaremos la contraseña cifrada
+  password  String   // AquÃ­ guardaremos la contraseÃ±a cifrada
   rol       String   @default("ADMIN") // Ejemplo: ADMIN, DESARROLLADOR, VOLUNTARIO
   creadoEn  DateTime @default(now())
   
-  // Relación opcional con el perfil de Voluntario
+  // RelaciÃ³n opcional con el perfil de Voluntario
   voluntarioId Int?       @unique
   voluntario   Voluntario? @relation(fields: [voluntarioId], references: [id], onDelete: Cascade)
+  noticias     Noticia[]
 }
 
 // Modelo para registrar las mejoras e ideas del desarrollador
@@ -89,3 +93,92 @@ model InsumoAmbulancia {
   actualizadoEn   DateTime   @updatedAt
 }
 
+// Modelos para Turnos
+model Turno {
+  id                    Int      @id @default(autoincrement())
+  titulo                String
+  descripcion           String?
+  fechaInicio           DateTime
+  fechaFin              DateTime
+  ubicacion             String?
+  habilidadesRequeridas String?
+  cuposMaximos          Int      @default(1)
+  estado                String   @default("Abierto") // Abierto, Cancelado, Completado
+  creadoEn              DateTime @default(now())
+  voluntariosInscritos  TurnoVoluntario[]
+}
+
+model TurnoVoluntario {
+  id           Int        @id @default(autoincrement())
+  turnoId      Int
+  voluntarioId Int
+  estado       String     @default("Inscrito") // Inscrito, AsistiÃ³, No AsistiÃ³
+  creadoEn     DateTime   @default(now())
+  turno        Turno      @relation(fields: [turnoId], references: [id], onDelete: Cascade)
+  voluntario   Voluntario @relation(fields: [voluntarioId], references: [id], onDelete: Cascade)
+
+  @@unique([turnoId, voluntarioId])
+}
+
+// Modelos para Capacitaciones (Eventos programados por Administrador)
+model Capacitacion {
+  id                    Int      @id @default(autoincrement())
+  titulo                String
+  descripcion           String?
+  fechaInicio           DateTime
+  fechaFin              DateTime
+  horaInicio            String   @default("08:00")
+  horaFin               String   @default("12:00")
+  diasClase             DateTime[]
+  ubicacion             String?
+  instructor            String?
+  cuposMaximos          Int      @default(10)
+  estado                String   @default("Programada") // Programada, En Curso, Finalizada, Cancelada
+  creadoEn              DateTime @default(now())
+  inscripciones         CapacitacionInscripcion[]
+}
+
+model CapacitacionInscripcion {
+  id               Int          @id @default(autoincrement())
+  capacitacionId   Int
+  voluntarioId     Int
+  estado           String       @default("Inscrito") // Inscrito, AsistiÃ³, No AsistiÃ³, AprobÃ³, ReprobÃ³
+  creadoEn         DateTime     @default(now())
+  capacitacion     Capacitacion @relation(fields: [capacitacionId], references: [id], onDelete: Cascade)
+  voluntario       Voluntario   @relation(fields: [voluntarioId], references: [id], onDelete: Cascade)
+
+  @@unique([capacitacionId, voluntarioId])
+}
+
+// Modelos para Comunidad y Soporte
+model Noticia {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  contenido String
+  categoria String   @default("Anuncios") // Anuncios, Actualizaciones, Eventos, Misiones
+  creadoEn  DateTime @default(now())
+  autorId   Int
+  autor     Usuario  @relation(fields: [autorId], references: [id])
+}
+
+model TicketSoporte {
+  id          Int      @id @default(autoincrement())
+  asunto      String
+  descripcion String
+  estado      String   @default("Abierto") // Abierto, Resuelto
+  respuesta   String?  // Respuesta del administrador
+  creadoEn    DateTime @default(now())
+  voluntarioId Int
+  voluntario  Voluntario @relation(fields: [voluntarioId], references: [id])
+}
+
+// Modelo para registrar actividad en el sistema (Logs para el Desarrollador)
+model RegistroLog {
+  id          Int      @id @default(autoincrement())
+  accion      String
+  pagina      String?
+  detalles    String?
+  usuarioId   Int?
+  rolUsuario  String?
+  creadoEn    DateTime @default(now())
+}

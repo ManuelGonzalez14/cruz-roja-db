@@ -218,24 +218,22 @@ export default function NewVolunteerModal({ isOpen, onClose }: Props) {
 
               <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>⚕️ Perfil Médico y Operativo</h3>
             
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <div className="input-group">
-                  <label>Especialidad</label>
-                  <CustomSelect 
-                    name="especialidad" 
-                    options={opcionesEspecialidad} 
-                    placeholder="Seleccione especialidad..." 
-                  />
-                </div>
+              <div className="input-group" style={{ marginBottom: '0.75rem' }}>
+                <label>Especialidad</label>
+                <CustomSelect 
+                  name="especialidad" 
+                  options={opcionesEspecialidad} 
+                  placeholder="Seleccione especialidad..." 
+                />
+              </div>
 
-                <div className="input-group">
-                  <label>Tipo de Sangre</label>
-                  <CustomSelect 
-                    name="tipoSangre" 
-                    options={opcionesSangre} 
-                    placeholder="Desconocido" 
-                  />
-                </div>
+              <div className="input-group" style={{ marginBottom: '0.75rem' }}>
+                <label>Tipo de Sangre</label>
+                <CustomSelect 
+                  name="tipoSangre" 
+                  options={opcionesSangre} 
+                  placeholder="Desconocido" 
+                />
               </div>
 
               <div className="input-group" style={{ marginBottom: '0.75rem' }}>

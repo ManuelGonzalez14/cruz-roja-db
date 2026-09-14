@@ -7,17 +7,21 @@ import ViewDetailsModal from './ViewDetailsModal';
 
 interface Props {
   voluntario: any;
+  isDetailsOpen?: boolean;
+  onCloseDetails?: () => void;
 }
 
-export default function VolunteerActions({ voluntario }: Props) {
+export default function VolunteerActions({ voluntario, isDetailsOpen: externalDetailsOpen, onCloseDetails }: Props) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isCursosOpen, setIsCursosOpen] = useState(false);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [internalDetailsOpen, setInternalDetailsOpen] = useState(false);
+
+  const detailsOpen = externalDetailsOpen ?? internalDetailsOpen;
+  const closeDetails = onCloseDetails ?? (() => setInternalDetailsOpen(false));
 
   return (
     <>
-      <div className="table-actions">
-        <button className="btn-icon" title="Ver Detalles" onClick={() => setIsDetailsOpen(true)}>👁️</button>
+      <div className="table-actions" onClick={(e) => e.stopPropagation()}>
         <button className="btn-icon" title="Cursos" onClick={() => setIsCursosOpen(true)}>🎓</button>
         <button className="btn-icon" title="Editar" onClick={() => setIsEditOpen(true)}>✏️</button>
       </div>
@@ -34,13 +38,14 @@ export default function VolunteerActions({ voluntario }: Props) {
         onClose={() => setIsCursosOpen(false)}
       />
 
-      {isDetailsOpen && (
+      {detailsOpen && (
         <ViewDetailsModal
           voluntario={voluntario}
-          isOpen={isDetailsOpen}
-          onClose={() => setIsDetailsOpen(false)}
+          isOpen={detailsOpen}
+          onClose={closeDetails}
         />
       )}
     </>
   );
 }
+

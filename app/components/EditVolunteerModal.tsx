@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
-import { actualizarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
+import { editarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
 import CustomSelect from './CustomSelect';
 
 const opcionesEspecialidad = [
@@ -46,6 +47,11 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
   const [isDeleting, setIsDeleting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(voluntario?.fotoUrl || null);
   const [activo, setActivo] = useState<boolean>(voluntario?.activo ?? true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -102,30 +108,63 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm('¿Estás completamente seguro de eliminar a este voluntario? Esta acción no se puede deshacer.')) {
-      return;
-    }
-
-    setIsDeleting(true);
-    try {
-      const result = await eliminarVoluntario(voluntario.id);
-      
-      if (result.success) {
-        toast.success('Voluntario eliminado exitosamente');
-        onClose();
-      } else {
-        toast.error(result.error || 'Ocurrió un error al eliminar');
-      }
-    } catch (error: any) {
-      console.error("Error de red o servidor:", error);
-      toast.error('Error de conexión con el servidor. Por favor intenta de nuevo.');
-    } finally {
-      setIsDeleting(false);
-    }
+  const handleDelete = () => {
+    toast((t) => (
+      <>
+        {typeof document !== 'undefined' && ReactDOM.createPortal(
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(5px)',
+            zIndex: 9998
+          }} />,
+          document.body
+        )}
+        <div style={{ padding: '0.5rem', position: 'relative', zIndex: 9999 }}>
+          <h4 style={{ margin: '0 0 0.5rem 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            ⚠️ Confirmar Eliminación
+          </h4>
+          <p style={{ margin: '0 0 1rem 0', color: '#4b5563', fontSize: '0.95rem' }}>
+            ¿Estás completamente seguro de eliminar a este voluntario? Esta acción no se puede deshacer.
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <button 
+              onClick={() => toast.dismiss(t.id)} 
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #d1d5db', background: 'transparent', cursor: 'pointer', fontWeight: 500, color: '#374151' }}
+            >
+              Cancelar
+            </button>
+            <button 
+              onClick={async () => {
+                toast.dismiss(t.id);
+                setIsDeleting(true);
+                try {
+                  const result = await eliminarVoluntario(voluntario.id);
+                  
+                  if (result.success) {
+                    toast.success('Voluntario eliminado exitosamente');
+                    onClose();
+                  } else {
+                    toast.error(result.error || 'Ocurrió un error al eliminar');
+                  }
+                } catch (error: any) {
+                  console.error("Error de red o servidor:", error);
+                  toast.error('Error de conexión con el servidor. Por favor intenta de nuevo.');
+                } finally {
+                  setIsDeleting(false);
+                }
+              }}
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', cursor: 'pointer', fontWeight: 500 }}
+            >
+              Sí, eliminar
+            </button>
+          </div>
+        </div>
+      </>
+    ), { duration: Infinity });
   };
 
-  return (
+  const modalContent = (
     <div className="modal-overlay" style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
       backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
@@ -261,26 +300,24 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
 
               <h3 style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>⚕️ Perfil Médico y Operativo</h3>
             
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <div className="input-group">
-                  <label>Especialidad</label>
-                  <CustomSelect 
-                    name="especialidad" 
-                    options={opcionesEspecialidad} 
-                    placeholder="Seleccione especialidad..." 
-                    value={voluntario.especialidad || ""}
-                  />
-                </div>
+              <div className="input-group" style={{ marginBottom: '0.75rem' }}>
+                <label>Especialidad</label>
+                <CustomSelect 
+                  name="especialidad" 
+                  options={opcionesEspecialidad} 
+                  placeholder="Seleccione especialidad..." 
+                  value={voluntario.especialidad || ""}
+                />
+              </div>
 
-                <div className="input-group">
-                  <label>Tipo de Sangre</label>
-                  <CustomSelect 
-                    name="tipoSangre" 
-                    options={opcionesSangre} 
-                    placeholder="Desconocido" 
-                    value={voluntario.tipoSangre || ""}
-                  />
-                </div>
+              <div className="input-group" style={{ marginBottom: '0.75rem' }}>
+                <label>Tipo de Sangre</label>
+                <CustomSelect 
+                  name="tipoSangre" 
+                  options={opcionesSangre} 
+                  placeholder="Desconocido" 
+                  value={voluntario.tipoSangre || ""}
+                />
               </div>
 
               <div className="input-group" style={{ marginBottom: '0.75rem' }}>
@@ -320,4 +357,7 @@ export default function EditVolunteerModal({ voluntario, isOpen, onClose }: Prop
       </div>
     </div>
   );
+
+  if (!isOpen || !mounted) return null;
+  return ReactDOM.createPortal(modalContent, document.body);
 }

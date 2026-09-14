@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { obtenerCursos } from '../acciones/cursos';
 
 interface Props {
@@ -37,12 +38,18 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
     };
   }, [isOpen, voluntario]);
 
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
 
   const iniciales = `${voluntario.nombre.charAt(0)}${voluntario.apellido.charAt(0)}`.toUpperCase();
   const nombreCompleto = `${voluntario.nombre} ${voluntario.segundoNombre ? voluntario.segundoNombre + ' ' : ''}${voluntario.apellido} ${voluntario.segundoApellido ? voluntario.segundoApellido : ''}`;
 
-  return (
+  const modalContent = (
     <div className="modal-overlay" onClick={onClose} style={{
       position: 'fixed',
       top: 0, left: 0, right: 0, bottom: 0,
@@ -326,4 +333,6 @@ export default function ViewDetailsModal({ voluntario, isOpen, onClose }: Props)
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }

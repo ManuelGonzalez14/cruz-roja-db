@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import ReactDOM from 'react-dom';
+import toast from 'react-hot-toast';
 import { agregarAmbulancia, guardarInsumo, ajustarCantidadInsumo, editarAmbulancia, eliminarAmbulancia } from '../acciones/ambulancias';
+import CustomSelect from './CustomSelect';
 
 export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbulancias: any[] }) {
   const [ambulancias, setAmbulancias] = useState(initialAmbulancias);
@@ -20,9 +23,10 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       const res = await agregarAmbulancia(formData);
       if (!res.error) {
         setShowAddAmbulance(false);
+        toast.success('Ambulancia agregada');
         window.location.reload(); // Quick refresh for demo
       } else {
-        alert(res.error);
+        toast.error(res.error);
       }
     });
   };
@@ -33,25 +37,62 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       const res = await editarAmbulancia(formData);
       if (!res.error) {
         setShowEditAmbulance(false);
+        toast.success('Ambulancia actualizada');
         window.location.reload();
       } else {
-        alert(res.error);
+        toast.error(res.error);
       }
     });
   };
 
-  const handleDeleteAmbulance = async (id: number, placa: string) => {
-    if (window.confirm(`¿Estás seguro de eliminar la ambulancia ${placa} y todo su inventario?`)) {
-      startTransition(async () => {
-        const res = await eliminarAmbulancia(id);
-        if (!res.error) {
-          if (selectedAmbulance?.id === id) setSelectedAmbulance(null);
-          window.location.reload();
-        } else {
-          alert(res.error);
-        }
-      });
-    }
+  const handleDeleteAmbulance = (id: number, placa: string) => {
+    toast((t) => (
+      <>
+        {typeof document !== 'undefined' && ReactDOM.createPortal(
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(5px)',
+            zIndex: 9998
+          }} />,
+          document.body
+        )}
+        <div style={{ padding: '0.5rem', position: 'relative', zIndex: 9999 }}>
+          <h4 style={{ margin: '0 0 0.5rem 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            ⚠️ Confirmar Eliminación
+          </h4>
+          <p style={{ margin: '0 0 1rem 0', color: '#4b5563', fontSize: '0.95rem' }}>
+            ¿Estás seguro de eliminar la ambulancia {placa} y todo su inventario?
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+            <button 
+              onClick={() => toast.dismiss(t.id)} 
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #d1d5db', background: 'transparent', cursor: 'pointer', fontWeight: 500, color: '#374151' }}
+            >
+              Cancelar
+            </button>
+            <button 
+              onClick={async () => {
+                toast.dismiss(t.id);
+                startTransition(async () => {
+                  const res = await eliminarAmbulancia(id);
+                  if (!res.error) {
+                    if (selectedAmbulance?.id === id) setSelectedAmbulance(null);
+                    toast.success('Ambulancia eliminada');
+                    window.location.reload();
+                  } else {
+                    toast.error(res.error);
+                  }
+                });
+              }}
+              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', cursor: 'pointer', fontWeight: 500 }}
+            >
+              Sí, eliminar
+            </button>
+          </div>
+        </div>
+      </>
+    ), { duration: Infinity });
   };
 
   const handleAddInsumo = async (formData: FormData) => {
@@ -60,9 +101,10 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       const res = await guardarInsumo(formData);
       if (!res.error) {
         setShowAddInsumo(false);
+        toast.success('Insumo agregado');
         window.location.reload();
       } else {
-        alert(res.error);
+        toast.error(res.error);
       }
     });
   };
@@ -106,9 +148,8 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
           <div 
             key={amb.id} 
             onClick={() => setSelectedAmbulance(amb)}
+            className={`ambulance-card ${selectedAmbulance?.id === amb.id ? 'selected' : ''}`}
             style={{ 
-              background: selectedAmbulance?.id === amb.id ? 'var(--cruz-roja-red)' : 'white', 
-              color: selectedAmbulance?.id === amb.id ? 'white' : 'var(--text-primary)',
               padding: '1.5rem', 
               borderRadius: '16px', 
               boxShadow: 'var(--shadow-sm)',
@@ -144,7 +185,7 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       </div>
 
       {/* Columna Derecha: Inventario */}
-      <div style={{ background: 'white', borderRadius: '24px', padding: '2rem', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-color)', minHeight: '500px' }}>
+      <div className="ambulance-details" style={{ borderRadius: '24px', padding: '2rem', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-color)', minHeight: '500px' }}>
         {selectedAmbulance ? (
           <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
@@ -220,8 +261,8 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       {/* Modal: Agregar Ambulancia */}
       {showAddAmbulance && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
-            <h3 style={{ margin: '0 0 1.5rem 0' }}>Registrar Ambulancia</h3>
+          <div style={{ background: 'var(--surface-color)', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--text-primary)' }}>Registrar Ambulancia</h3>
             <form action={handleAddAmbulance}>
               <div className="form-group">
                 <label className="form-label">Placa / Identificador</label>
@@ -233,11 +274,16 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
               </div>
               <div className="form-group">
                 <label className="form-label">Estado Inicial</label>
-                <select name="estado" className="form-input">
-                  <option value="Operativa">Operativa</option>
-                  <option value="En Taller">En Taller</option>
-                  <option value="Fuera de Servicio">Fuera de Servicio</option>
-                </select>
+                <CustomSelect
+                  name="estado"
+                  options={[
+                    { value: 'Operativa', label: 'Operativa' },
+                    { value: 'En Taller', label: 'En Taller' },
+                    { value: 'Fuera de Servicio', label: 'Fuera de Servicio' }
+                  ]}
+                  value="Operativa"
+                  placeholder="Seleccione estado..."
+                />
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
                 <button type="button" onClick={() => setShowAddAmbulance(false)} className="form-button" style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}>Cancelar</button>
@@ -251,8 +297,8 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       {/* Modal: Editar Ambulancia */}
       {showEditAmbulance && editingAmbulance && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
-            <h3 style={{ margin: '0 0 1.5rem 0' }}>Editar Ambulancia</h3>
+          <div style={{ background: 'var(--surface-color)', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--text-primary)' }}>Editar Ambulancia</h3>
             <form action={handleEditAmbulance}>
               <div className="form-group">
                 <label className="form-label">Placa / Identificador</label>
@@ -264,11 +310,16 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
               </div>
               <div className="form-group">
                 <label className="form-label">Estado</label>
-                <select name="estado" className="form-input" defaultValue={editingAmbulance.estado}>
-                  <option value="Operativa">Operativa</option>
-                  <option value="En Taller">En Taller</option>
-                  <option value="Fuera de Servicio">Fuera de Servicio</option>
-                </select>
+                <CustomSelect
+                  name="estado"
+                  options={[
+                    { value: 'Operativa', label: 'Operativa' },
+                    { value: 'En Taller', label: 'En Taller' },
+                    { value: 'Fuera de Servicio', label: 'Fuera de Servicio' }
+                  ]}
+                  value={editingAmbulance.estado}
+                  placeholder="Seleccione estado..."
+                />
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
                 <button type="button" onClick={() => setShowEditAmbulance(false)} className="form-button" style={{ background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}>Cancelar</button>
@@ -282,8 +333,8 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
       {/* Modal: Agregar Insumo */}
       {showAddInsumo && selectedAmbulance && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
-            <h3 style={{ margin: '0 0 1.5rem 0' }}>Añadir Insumo a {selectedAmbulance.placa}</h3>
+          <div style={{ background: 'var(--surface-color)', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '400px' }}>
+            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--text-primary)' }}>Añadir Insumo a {selectedAmbulance.placa}</h3>
             <form action={handleAddInsumo}>
               <div className="form-group">
                 <label className="form-label">Nombre del Insumo / Equipo</label>
@@ -296,12 +347,17 @@ export default function AmbulanceDashboard({ initialAmbulancias }: { initialAmbu
                 </div>
                 <div className="form-group">
                   <label className="form-label">Categoría</label>
-                  <select name="categoria" className="form-input">
-                    <option value="Material Gastable">Material Gastable</option>
-                    <option value="Medicamentos">Medicamentos</option>
-                    <option value="Equipos">Equipos Médicos</option>
-                    <option value="Herramientas">Herramientas</option>
-                  </select>
+                  <CustomSelect
+                    name="categoria"
+                    options={[
+                      { value: 'Material Gastable', label: 'Material Gastable' },
+                      { value: 'Medicamentos', label: 'Medicamentos' },
+                      { value: 'Equipos', label: 'Equipos Médicos' },
+                      { value: 'Herramientas', label: 'Herramientas' }
+                    ]}
+                    value="Material Gastable"
+                    placeholder="Seleccione categoría..."
+                  />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>

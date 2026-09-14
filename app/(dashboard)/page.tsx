@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import Link from 'next/link';
 import DashboardHeader from '../components/DashboardHeader';
 import SearchBar from '../components/SearchBar';
-import VolunteerActions from '../components/VolunteerActions';
+import VolunteerCard from '../components/VolunteerCard';
 import VolunteerDashboard from '../components/VolunteerDashboard';
 import { cookies } from 'next/headers';
 
@@ -140,56 +141,11 @@ export default async function DashboardPage(
             No hay voluntarios registrados aún.
           </div>
         ) : (
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Nombre Completo</th>
-                <th>Cédula</th>
-                <th>N° de Carnet</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {voluntarios.map((voluntario: any) => {
-                const iniciales = `${voluntario.nombre.charAt(0)}${voluntario.apellido.charAt(0)}`.toUpperCase();
-                
-                return (
-                  <tr key={voluntario.id}>
-                    <td>
-                      <div className="volunteer-profile">
-                        {(voluntario as any).fotoUrl ? (
-                          <img src={(voluntario as any).fotoUrl} alt={voluntario.nombre} className="avatar" />
-                        ) : (
-                          <div className="avatar">{iniciales}</div>
-                        )}
-                        <span style={{ fontWeight: 600 }}>
-                          {voluntario.nombre} {voluntario.segundoNombre ? voluntario.segundoNombre + ' ' : ''}
-                          {voluntario.apellido} {voluntario.segundoApellido ? voluntario.segundoApellido : ''}
-                        </span>
-                      </div>
-                    </td>
-                  <td>{voluntario.cedula}</td>
-                  <td>{voluntario.numeroCarnet || '-'}</td>
-                  <td>
-                    {voluntario.activo ? (
-                      <span style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#059669', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                        ACTIVO
-                      </span>
-                    ) : (
-                      <span style={{ backgroundColor: 'rgba(107, 114, 128, 0.15)', color: '#4b5563', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                        INACTIVO
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    <VolunteerActions voluntario={voluntario} />
-                  </td>
-                </tr>
-              );
-            })}
-            </tbody>
-          </table>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', marginTop: '1rem', padding: '0.5rem 0.5rem 2rem 0.5rem' }}>
+            {voluntarios.map((voluntario: any) => (
+              <VolunteerCard key={voluntario.id} voluntario={voluntario} />
+            ))}
+          </div>
         )}
       </div>
     </div>
