@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
-import { editarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
+import { actualizarVoluntario, eliminarVoluntario } from '../acciones/voluntarios';
 import CustomSelect from './CustomSelect';
 
 const opcionesEspecialidad = [
